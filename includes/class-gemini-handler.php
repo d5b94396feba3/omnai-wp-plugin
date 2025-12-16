@@ -815,13 +815,13 @@ class Gemini_Handler {
         ];
     }
     
-    /**
+/**
      * Extract and validate JSON data from the raw generated text.
      * Handles markdown fences (```json{...}```) and various label prefixes (POST{...}, json{...}).
-     * * @param string $generated_text The full raw text response from the model.
+     * @param string $generated_text The full raw text response from the model.
      * @return array The extracted data or fallback defaults.
      */
-    private function extract_json_data(string $generated_text): array {
+    private function extract_json_data_old(string $generated_text): array {
         $extracted_data = [
             'title' => '',
             'content' => '',
@@ -829,35 +829,46 @@ class Gemini_Handler {
             'image' => ''
         ];
 
-        $clean_content = trim($generated_text);
+        // Aggressive trim for initial cleaning (handles leading/trailing newlines/spaces)
+        $clean_content = trim($generated_text); 
         $json_block = null;
+
+        error_log("llm returned json: ". print_r($clean_content, true));
 
         // --- Step 1: Try to extract the JSON block enclosed in markdown fences (`json`) ---
         // This is the cleanest and preferred method.
         if (preg_match('/```json\s*(\{[\s\S]*?\})\s*```/s', $clean_content, $matches)) {
             $json_block = $matches[1];
-            error_log("Extracted JSON from markdown block.");
+            error_log("Extracted JSON from markdown block (Step 1).");
         }
 
-        // --- Step 2: Fallback to decoding, allowing for optional prefix/label text (THE ROBUST FIX) ---
-        // This regex looks for: 
-        // ^\s* (Start of string, optional whitespace)
-        // (?:[a-zA-Z0-9_\-]+\s*)? (Optional prefix like 'POST' or 'json' followed by space/newlines)
-        // (\{[\s\S]*\}\s*)$ (The actual JSON object, starting with { and ending with }).
-        if (is_null($json_block) && 
-            preg_match('/^\s*(?:[a-zA-Z0-9_\-]+\s*)?(\{[\s\S]*\}\s*)$/s', $clean_content, $matches)) {
+        // --- Step 2: Fallback to decoding, handling prefixes like 'POST' or 'json' (IMPROVED ROBUSTNESS) ---
+        // This regex aggressively looks for an optional prefix followed by the JSON block itself.
+        // It ensures the match spans the entire clean string from start to finish.
+        if (is_null($json_block)) {
+            // Regex explanation:
+            // ^\s* : Start of string, optional whitespace
+            // (?:[a-zA-Z0-9_\-]+\s*)? : Optional prefix (like POST) followed by space/newlines
+            // (\{[\s\S]*?\}) : Capture group 1: The actual JSON object, non-greedy match of content inside {}
+            // \s*$ : Optional whitespace until the end of the string
             
-            // Capture group 1 ($matches[1]) is the content inside the braces
-            $json_block = $matches[1]; 
-            error_log("Attempting JSON decode on content with optional prefix (e.g., 'POST').");
+            if (preg_match('/^\s*(?:[a-zA-Z0-9_\-]+\s*)?(\{[\s\S]*?\})\s*$/s', $clean_content, $matches)) {
+                
+                // Capture group 1 ($matches[1]) is the content inside the braces
+                $json_block = $matches[1]; 
+                error_log("Attempting JSON decode on content with optional prefix (Step 2).");
+            }
         }
 
         // --- Step 3: Decode the extracted/raw JSON string and validate ---
         if (!is_null($json_block)) {
             $json_data = json_decode($json_block, true);
             
+            // Log the raw JSON block being decoded for easier debugging of malformed output
+            // error_log("Attempting JSON decode on block: " . substr($json_block, 0, 500)); 
+
             if (json_last_error() === JSON_ERROR_NONE && is_array($json_data)) {
-                error_log("Successfully decoded and parsed JSON data.");
+                error_log("Successfully decoded and parsed JSON data (Step 3).");
                 
                 // Populate extracted data if required fields exist
                 if (isset($json_data['title']) && isset($json_data['content'])) {
@@ -871,17 +882,95 @@ class Gemini_Handler {
                     return $extracted_data;
                 }
             } else {
-                error_log("JSON decode failed: " . json_last_error_msg() . ". Problematic content start: " . substr($json_block, 0, 50));
+                error_log("JSON decode failed: " . json_last_error_msg() . ". Problematic content start: " . substr($json_block, 0, 100));
             }
         }
 
         // --- Final Fallback: Treat the whole response as the content ---
         error_log("Using final fallback - raw content as post content with default title.");
-        $extracted_data['content'] = $clean_content;
+        $extracted_data['content'] = $generated_text; // Use original generated_text here for debugging
         $extracted_data['title'] = 'Generated Content';
         
         return $extracted_data;
     }
+
+
+    /**
+ * Extract and validate JSON data from the raw generated text.
+ * Handles markdown fences (```json{...}```) and various label prefixes (POST{...}, json{...}).
+ * @param string $generated_text The full raw text response from the model.
+ * @return array The extracted data or fallback defaults.
+ */
+private function extract_json_data(string $generated_text): array {
+    $extracted_data = [
+        'title' => '',
+        'content' => '',
+        'tags' => [],
+        'image' => ''
+    ];
+
+    // Aggressive trim for initial cleaning
+    $clean_content = trim($generated_text); 
+    $json_block = null;
+
+    error_log("llm returned json: ". print_r($clean_content, true));
+
+    // --- Step 1: Try to extract the JSON block enclosed in markdown fences (`json`) ---
+    // This is the cleanest and preferred method.
+    if (preg_match('/```json\s*(\{[\s\S]*?\})\s*```/s', $clean_content, $matches)) {
+        $json_block = $matches[1];
+        error_log("Extracted JSON from markdown block (Step 1).");
+    }
+
+    // --- Step 2: Fallback: Robustly find the JSON object, ignoring prefixes and surrounding text ---
+    // This is the CRITICAL FIX. It looks for the FIRST occurrence of an opening brace '{'
+    // followed by any content, and then the LAST occurrence of a closing brace '}' that follows.
+    // This ignores junk (like 'POST' or comments) *before* the JSON and junk *after* it.
+    if (is_null($json_block)) {
+        // Regex explanation:
+        // /\{ : Matches the literal first opening brace
+        // [\s\S]*? : Matches any character (including newline) non-greedily
+        // \}/ : Matches the literal last closing brace
+        // This is a simple but effective way to isolate the main JSON block.
+        // It relies on the JSON being the first and main block in the output.
+        if (preg_match('/\{[\s\S]*\}/s', $clean_content, $matches)) {
+            // Because we used a greedy match (\{[\s\S]*\}), $matches[0] contains the
+            // content from the first '{' to the last '}'.
+            $json_block = $matches[0];
+            error_log("Attempting robust JSON extraction (Step 2 - New Regex).");
+        }
+    }
+
+    // --- Step 3: Decode the extracted/raw JSON string and validate ---
+    if (!is_null($json_block)) {
+        $json_data = json_decode($json_block, true);
+        
+        if (json_last_error() === JSON_ERROR_NONE && is_array($json_data)) {
+            error_log("Successfully decoded and parsed JSON data (Step 3).");
+            
+            // Populate extracted data if required fields exist
+            if (isset($json_data['title']) && isset($json_data['content'])) {
+                $extracted_data['title'] = $json_data['title'] ?? '';
+                $extracted_data['content'] = $json_data['content'] ?? '';
+                // Ensure tags is an array
+                $extracted_data['tags'] = is_array($json_data['tags'] ?? null) ? $json_data['tags'] : (is_string($json_data['tags'] ?? null) ? explode(', ', $json_data['tags']) : []);
+                $extracted_data['image'] = $json_data['image'] ?? '';
+                
+                error_log("Final extraction successful: Title='" . $extracted_data['title'] . "'");
+                return $extracted_data;
+            }
+        } else {
+            error_log("JSON decode failed: " . json_last_error_msg() . ". Problematic content start: " . substr($json_block, 0, 100));
+        }
+    }
+
+    // --- Final Fallback: Treat the whole response as the content ---
+    error_log("Using final fallback - raw content as post content with default title.");
+    $extracted_data['content'] = $generated_text; // Use original generated_text here for debugging
+    $extracted_data['title'] = 'Generated Content';
+    
+    return $extracted_data;
+}
 
     private static function parse_content_gemini($content) {
         if (is_array($content) || is_object($content)) {

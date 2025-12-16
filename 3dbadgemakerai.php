@@ -37,7 +37,8 @@ require_once MPAI_PLUGIN_DIR . 'includes/class-assets.php';
 require_once MPAI_PLUGIN_DIR . 'includes/class-error-logger.php';
 require_once MPAI_PLUGIN_DIR . 'includes/class-generate-handler.php';
 require_once MPAI_PLUGIN_DIR . 'includes/class-refine-handler.php';
-
+// Ensure the new ImageHandler class is loaded
+require_once MPAI_PLUGIN_DIR . 'includes/class-image-handler.php';
 // Initialize the plugin
 add_action('plugins_loaded', function() {
     if (!class_exists('Elementor\Plugin')) {

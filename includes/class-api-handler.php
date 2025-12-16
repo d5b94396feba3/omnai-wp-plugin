@@ -111,6 +111,36 @@ class ApiHandler {
                 ],
             ]
         ]);
+        
+        // NEW ENDPOINT: Refine Image
+        register_rest_route('medium-post-ai/v1', '/refine-image', [
+            'methods' => 'POST',
+            'callback' => ['MediumPostAI\ImageHandler', 'handle_refine_image'], // Assuming a new ImageHandler class
+            'permission_callback' => function() {
+                return is_user_logged_in();
+            },
+            'args' => [
+                'base_concept' => ['required' => true, 'sanitize_callback' => 'sanitize_text_field'],
+                'refinement_instruction' => ['required' => true, 'sanitize_callback' => 'sanitize_text_field'],
+                'post_title' => ['required' => true, 'sanitize_callback' => 'sanitize_text_field'],
+                'content_type' => ['required' => false, 'sanitize_callback' => 'sanitize_text_field'],
+            ]
+        ]);
+
+        // NEW ENDPOINT: Regenerate Image
+        register_rest_route('medium-post-ai/v1', '/regenerate-image', [
+            'methods' => 'POST',
+            'callback' => ['MediumPostAI\ImageHandler', 'handle_regenerate_image'], // Assuming a new ImageHandler class
+            'permission_callback' => function() {
+                return is_user_logged_in();
+            },
+            'args' => [
+                'base_concept' => ['required' => true, 'sanitize_callback' => 'sanitize_text_field'], // Will be the post title
+                'post_title' => ['required' => true, 'sanitize_callback' => 'sanitize_text_field'],
+                'content_type' => ['required' => false, 'sanitize_callback' => 'sanitize_text_field'],
+            ]
+        ]);
+
 
         register_rest_route('medium-post-ai/v1', '/progress', [
             'methods' => 'GET',
@@ -256,8 +286,7 @@ class ApiHandler {
 
     /**
      * Stores site URL data in a transient for later retrieval
-     * 
-     * @param array $site_data The site data to store (should contain 'base64Image' and other relevant data)
+     * * @param array $site_data The site data to store (should contain 'base64Image' and other relevant data)
      * @param int $expiration Optional. Time until expiration in seconds. Default 3600 (1 hour).
      * @return bool True if value was set, false otherwise.
      */
@@ -279,8 +308,7 @@ class ApiHandler {
 
     /**
      * Retrieves stored site URL data from transient
-     * 
-     * @param string $siteURL Optional. If data doesn't exist, will fetch fresh data using this URL.
+     * * @param string $siteURL Optional. If data doesn't exist, will fetch fresh data using this URL.
      * @param bool $force_refresh Optional. Whether to ignore cached data and fetch fresh.
      * @return array|false The site data array or false on failure.
      */
@@ -329,8 +357,7 @@ class ApiHandler {
 
     /**
      * Clears stored site URL data
-     * 
-     * @return bool True if successful, false otherwise.
+     * * @return bool True if successful, false otherwise.
      */
     public static function clear_site_url_data() {
         $user_id = get_current_user_id();
@@ -347,8 +374,7 @@ class ApiHandler {
      * This method sets a transient to track the progress of Figma operations.
      * It includes the source of the operation, the message to display, and a timestamp.
      * The transient expires after 1 minute to ensure it doesn't persist unnecessarily.
-     * 
-     * @param string $msg The message to display indicating the progress.
+     * * @param string $msg The message to display indicating the progress.
      * @param string $source_name The source of the operation, e.g., "Figma URL".
      */
     public static function update_progress($msg, $source_name) {

@@ -24,7 +24,7 @@ function markdownToHtml(markdown) {
   if (!markdown) return '';
   let html = markdown;
   html = html.replace(/```(.*)\n([\s\S]*?)```/g, function(match, lang, code) {
-    const escapedCode = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const escapedCode = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/</g, '&gt;');
     const languageClass = lang.trim() ? `language-${lang.trim()}` : '';
     return `<pre class="f2e-md-pre"><code class="${languageClass}">${escapedCode.trim()}</code></pre>`;
   });
@@ -256,7 +256,7 @@ const Preview = {
     });
   }
 };
-// --- Metadata Functions (Original, Unchanged) ---
+// --- Metadata Functions (MODIFIED SECTION) ---
 const Metadata = {
   createMetadataPanel: function(metadata) {
     $('.f2e-metadata-panel').remove();
@@ -264,6 +264,10 @@ const Metadata = {
     const featuredImage = metadata.image || '';
     const imageUrl = F2E.Utils.getFeaturedImageUrl(featuredImage);
     const imageTitleSlug = (metadata.title || 'featured-image').replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    
+    // NEW: Check if the 'image' field is a URL or a concept.
+    const isImageGenerated = featuredImage.startsWith('http') || featuredImage.startsWith('/');
+
     const metadataPanel = `
       <div class="f2e-metadata-panel mt-6 border border-[var(--border-gray-200)] rounded-lg bg-[var(--bg-gray-50)] overflow-hidden transition-all duration-300">
         <div class="f2e-metadata-header bg-white px-4 py-3 border-b border-[var(--border-gray-200)] flex items-center justify-between cursor-pointer hover:bg-[var(--bg-gray-50)] transition-colors">
@@ -315,8 +319,23 @@ const Metadata = {
               ${imageUrl ? `
               <div class="f2e-image-preview-wrapper flex flex-col gap-3">
                 <img src="${imageUrl}" alt="${metadata.title || 'Featured Image Concept'}" class="w-full h-auto max-h-48 object-cover rounded-md border border-[var(--border-gray-300)]"/>
-                <div class="flex flex-wrap gap-2">
-                  <button class="f2e-open-image-modal f2e-button f2e-button-primary py-2 px-4 rounded-lg text-sm font-medium flex items-center justify-center gap-2 shadow-sm hover:shadow-md transition-all duration-200" data-image-url="${imageUrl}" data-image-title-slug="${imageTitleSlug}" aria-label="View and Download Image">
+                
+                <div class="f2e-image-actions-new flex flex-wrap gap-2">
+                  ${isImageGenerated ? `
+                    <button class="f2e-refine-image-button f2e-button f2e-button-primary py-2 px-4 rounded-lg text-sm font-medium flex items-center justify-center gap-2 shadow-sm hover:shadow-md transition-all duration-200">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                      </svg>
+                      Refine
+                    </button>
+                    <button class="f2e-regenerate-image-button f2e-button f2e-button-secondary py-2 px-4 rounded-lg border border-[var(--gray-300)] text-[var(--text-gray-700)] hover:bg-[var(--bg-gray-100)] flex items-center justify-center gap-2 shadow-sm transition-colors duration-200 text-sm">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                      </svg>
+                      Regenerate
+                    </button>
+                  ` : ''}
+                  <button class="f2e-open-image-modal f2e-button f2e-button-secondary py-2 px-4 rounded-lg border border-[var(--gray-300)] text-[var(--text-gray-700)] hover:bg-[var(--bg-gray-100)] focus:outline-none focus:ring-2 focus:ring-[var(--gray-300)] flex items-center justify-center gap-2 shadow-sm transition-colors duration-200 text-sm" data-image-url="${imageUrl}" data-image-title-slug="${imageTitleSlug}" aria-label="View and Download Image">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
                     </svg>
@@ -366,6 +385,11 @@ const Metadata = {
           alert('Failed to copy metadata to clipboard');
         });
     });
+    
+    // NEW: Re-attach image action handlers after metadata panel is rebuilt
+    if (window.F2E.ImageActions && window.F2E.ImageActions.attachImageActionHandlers) {
+        window.F2E.ImageActions.attachImageActionHandlers();
+    }
   }
 };
 // --- Modal Functions (Original, Unchanged) ---

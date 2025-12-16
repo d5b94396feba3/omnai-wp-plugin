@@ -236,6 +236,11 @@ window.F2E = window.F2E || {};
             }
         });
         // END NEW
+        
+        // NEW: Ensure Image Action Handlers are attached after everything is ready/loaded
+        if (window.F2E.ImageActions && window.F2E.ImageActions.attachImageActionHandlers) {
+             window.F2E.ImageActions.attachImageActionHandlers();
+        }
     }
     
     // --- Document Ready ---

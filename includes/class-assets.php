@@ -78,14 +78,25 @@ class Assets {
             true
         );
 
+        // 4. NEW Image Actions Module
+        wp_register_script(
+            'f2e-image-actions',
+            MPAI_PLUGIN_URL . 'assets/js/f2e-image.js',
+            ['f2e-core', 'f2e-ui-components'], // Depends on both core and UI (for loader, metadata functions)
+            MPAI_VERSION,
+            true
+        );
+
         // --- LOCALIZATION (CRITICAL FIX) ---
-        // This MUST happen before f2e-core is enqueued.
+        // Add new AJAX URLs to MPAI_vars for the new image functionality
         wp_localize_script(
             'f2e-core', 
             'MPAI_vars', 
             [
                 'ajax_url' => rest_url('medium-post-ai/v1/generate'),
                 'ajax_url_progress' => rest_url('medium-post-ai/v1/progress'),
+                'ajax_url_refine_image' => rest_url('medium-post-ai/v1/refine-image'), // NEW ENDPOINT
+                'ajax_url_regenerate_image' => rest_url('medium-post-ai/v1/regenerate-image'), // NEW ENDPOINT
                 'nonce' => wp_create_nonce('wp_rest'),
                 // NOTE: Adjust 'preview_page_url' retrieval as needed for your specific setup
                 'preview_page_url' => get_permalink(get_page_by_title('MPAI Preview')) ?: site_url(), 
@@ -100,6 +111,7 @@ class Assets {
                     'confirm_clear_generate' => __('Do you want to clear the generated content?', 'medium-post-ai'),
                     'preparing_preview' => __('Preparing preview...', 'medium-post-ai'),
                     'preview' => __('Preview', 'medium-post-ai'),
+                    'confirm_regenerate_image' => __('Are you sure you want to regenerate the featured image? This will cost additional points.', 'medium-post-ai'), // NEW I18N
                     // Add any other i18n strings used in your JS
                 ],
             ]
@@ -115,6 +127,7 @@ class Assets {
         // Scripts (Must be in order due to dependencies)
         wp_enqueue_script('f2e-core');
         wp_enqueue_script('f2e-ui-components');
+        wp_enqueue_script('f2e-image-actions'); // NEW
         wp_enqueue_script('f2e-generate');
     }
 }
