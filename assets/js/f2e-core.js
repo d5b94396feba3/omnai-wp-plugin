@@ -33,6 +33,18 @@ window.F2E = window.F2E || {};
     const i18n = MPAI_vars.i18n || {};
     const $siteURL = $('#f2e-site-url');
 
+    // NEW ADVANCED FIELDS AND MODAL ELEMENTS
+    const $advancedSettingsButton = $('#f2e-advanced-settings-button');
+    const $advancedModal = $('#f2e-advanced-modal');
+    const $advancedModalCloseButtons = $advancedModal.find('.f2e-close-modal');
+    const $targetKeyword = $('#f2e-target-keyword');
+    const $audienceLevel = $('#f2e-audience-level');
+    const $desiredTone = $('#f2e-desired-tone');
+    const $language = $('#f2e-language'); // NEW
+    const $requiredLength = $('#f2e-required-length'); // NEW
+    const $callToAction = $('#f2e-call-to-action'); // NEW
+    // END NEW
+
     const basePointsPerIteration = 100;
     
     // Global state
@@ -48,7 +60,10 @@ window.F2E = window.F2E || {};
         $generateButton, $description, $copyButton, $downloadButton, 
         $clearButton, $resultContainerActions, $resultCode, $loading, 
         $f2eCodeContainer, $resultContent, $previewButton, $iterationOptions, 
-        $iterationsValue, $f2eClearConsoleButton, $contentTypeSelect, $siteURL
+        $iterationsValue, $f2eClearConsoleButton, $contentTypeSelect, $siteURL,
+        // NEW ADVANCED FIELDS
+        $advancedSettingsButton, $advancedModal, $targetKeyword, $audienceLevel, $desiredTone,
+        $language, $requiredLength, $callToAction // ADDED HERE
     };
     window.F2E.Constants = { basePointsPerIteration, i18n };
     window.F2E.State = { pollProgress, lastProgress, loaderInterval, currentProgress, targetProgress, lastGeneratedMetadata };
@@ -79,7 +94,7 @@ window.F2E = window.F2E || {};
             if (contentType === 'devio') {
                 $description.attr('placeholder', 'Generate a Dev.io post about web development...');
             } else {
-                $description.attr('placeholder', 'Generate a Medium post about ai automation...');
+                $description.attr('placeholder', 'Give a topic name or description or any text...');
             }
         },
         updateInputUI: function() {
@@ -106,7 +121,7 @@ window.F2E = window.F2E || {};
             
             const currentIterations = window.F2E.Utils.getIterations();
             const totalPoints = basePointsPerIteration * currentIterations;
-            const buttonText = $resultCode.text().trim() && $resultCode.text().trim() !== 'No content generated yet.' ? 'Update' : 'Generate';
+            const buttonText = $resultCode.text().trim() && $resultCode.text().trim() !== 'No content generated yet.' ? 'Refine' : 'Generate';
             
             $generateButton.html(`
                 <span class="f2e-button-content">
@@ -199,6 +214,28 @@ window.F2E = window.F2E || {};
         if (window.F2E.Preview && window.F2E.Preview.updateLivePreview) {
             $('#f2e-refresh-preview').on('click', window.F2E.Preview.updateLivePreview);
         }
+
+        // NEW: Advanced Modal Actions
+        $advancedSettingsButton.on('click', function() {
+            $advancedModal.removeClass('hidden').addClass('flex');
+        });
+
+        $advancedModalCloseButtons.on('click', function() {
+            $advancedModal.removeClass('flex').addClass('hidden');
+        });
+
+        $advancedModal.on('click', function(e) {
+            if (e.target === this) {
+                $advancedModal.removeClass('flex').addClass('hidden');
+            }
+        });
+        
+        $(document).on('keydown', function(e) {
+            if (e.key === 'Escape' && $advancedModal.hasClass('flex')) {
+                $advancedModal.removeClass('flex').addClass('hidden');
+            }
+        });
+        // END NEW
     }
     
     // --- Document Ready ---

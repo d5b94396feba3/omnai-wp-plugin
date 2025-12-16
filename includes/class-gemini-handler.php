@@ -1148,136 +1148,190 @@ class Gemini_Handler {
     }
 
 
-    public static function prepare_refine_description_messages_gemini(
-        $refine_system_prompt,
-        $current_code, 
-        $update_description,
-        $original_description,
-        $logo
-    ) {
-        $messages = [];
+// --- Updated Gemini Message Preparation Functions ---
 
-        // 1. Initial system prompt (if treated as a user message or context)
-        // For Gemini, it's common to put the "system" instructions in the first user message.
-        $messages[] = [
-            'role' => 'user',
-            'content' => $refine_system_prompt
-        ];
-        error_log('prepare_refine_description_messages_gemini: ' . $current_code);
-        // 2. Provide the "current code" and the "original description" as context
-        // This is the code the model needs to work with.
-        $context_content = [
-            [
-                'type' => 'text',
-                'text' => "Here is the title/desc about the blog:"
-            ],
-            [
-                'type' => 'text',
-                'text' => $current_code // The code itself
-            ]
-        ];
+public static function prepare_refine_description_messages_gemini(
+    $refine_system_prompt,
+    $current_code, 
+    $update_description,
+    $original_description,
+    $logo,
+    $target_keyword, 
+    $audience_level, 
+    $desired_tone,
+    $language, // NEW
+    $required_length, // NEW
+    $call_to_action    // NEW
+) {
+    $messages = [];
 
-        if (!empty($original_description)) {
-            $context_content[] = [
-                'type' => 'text',
-                'text' => "Title/Desc: " . $original_description
-            ];
-        }
-
-        $messages[] = [
-            'role' => 'user',
-            'content' => $context_content
-        ];
-
-        // 3. Provide the specific refinement instructions
-        // This is the action the model needs to take.
-        $messages[] = [
-            'role' => 'user',
-            'content' => [
-                [
-                    'type' => 'text',
-                    'text' => "Convert it into blog based on the context: " . $update_description
-                ],
-            ]
-        ];
-        
-        // For a single refine step, the above is often sufficient.
-        // Example: $messages[] = ['role' => 'model', 'content' => 'Okay, I understand. I will refine the code based on your instructions.'];
-
-        return $messages;
+    // 1. Initial system prompt (if treated as a user message or context)
+    $messages[] = [
+        'role' => 'user',
+        'content' => $refine_system_prompt
+    ];
+    error_log('prepare_refine_description_messages_gemini: ' . $current_code);
+    
+    // --- NEW: Conditionally build the refinement instruction based on advanced fields ---
+    $advanced_instruction = "";
+    if (!empty($target_keyword)) {
+        $advanced_instruction .= " Target SEO Keyword: '" . trim($target_keyword) . "'.";
     }
+    if (!empty($audience_level)) {
+        $advanced_instruction .= " Audience Level: '" . trim($audience_level) . "'.";
+    }
+    if (!empty($desired_tone)) {
+        $advanced_instruction .= " Desired Tone: '" . trim($desired_tone) . "'.";
+    }
+    if (!empty($language)) {
+        $advanced_instruction .= " Output Language: '" . trim($language) . "'.";
+    }
+    if (!empty($required_length)) {
+        $advanced_instruction .= " Required Length: '" . trim($required_length) . "'.";
+    }
+    if (!empty($call_to_action)) {
+        $advanced_instruction .= " MANDATORY Call to Action: '" . trim($call_to_action) . "'.";
+    }
+    // --- END NEW ---
 
-
-    public static function prepare_refine_description_messages_gemini_yt(
-        $refine_system_prompt,
-        $current_code, 
-        $update_description,
-        $original_description,
-        $logo,
-        $yt_url
-    ) {
-        $messages = [];
-        $final_user_parts = [];
-
-        // 1. Initial system prompt (as the first user message)
-        $messages[] = [
-            'role' => 'user',
-            'content' => $refine_system_prompt
-        ];
-        
-        // 2. Add Video URL (if not empty) and its primary instruction
-        if (!empty($yt_url)) {
-            // Add the video file data part (this maps to 'fileData' in prepare_payload)
-            $final_user_parts[] = [
-                'type' => 'file_data', 
-                'fileData' => [
-                    'mimeType' => 'video/*', 
-                    'fileUri' => $yt_url 
-                ]
-            ];
-            // Add the instruction to use the video as the main source
-            $instruction_text = "Convert the ATTACHED YOUTUBE VIDEO content into a blog post.";
-        } else {
-            // If NO URL, base instruction on the update description
-            $instruction_text = "Convert the provided context into a blog post.";
-        }
-        
-        // 3. Add context text and refinement instructions
-
-        // Add context for the existing title/desc (current_code)
-        $context_parts = [
-            [
-                'type' => 'text',
-                'text' => "Here is the existing title/description content (if applicable): " . $current_code
-            ]
-        ];
-        if (!empty($original_description)) {
-            $context_parts[] = [
-                'type' => 'text',
-                'text' => "Original instructions for context: " . $original_description
-            ];
-        }
-
-        // Add the main instruction
-        $instruction_parts = [
+    // 2. Provide the "current code" and the "original description" as context
+    // This is the code the model needs to work with.
+    $context_content = [
+        [
             'type' => 'text',
-            'text' => $instruction_text . " Apply these specific changes: " . $update_description
-        ];
-        
-        // Combine all parts for the final user message
-        $final_user_parts = array_merge(
-            $final_user_parts, // Contains video Part
-            $context_parts,    // Contains current_code context
-            [$instruction_parts] // Contains the final prompt
-        );
+            'text' => "Here is the title/desc about the blog (the content to be refined):"
+        ],
+        [
+            'type' => 'text',
+            'text' => $current_code // The code itself
+        ]
+    ];
 
-        $messages[] = [
-            'role' => 'user',
-            'content' => $final_user_parts
+    if (!empty($original_description)) {
+        $context_content[] = [
+            'type' => 'text',
+            'text' => "Original Instructions: " . $original_description
         ];
-        
-        return $messages;
     }
+
+    $messages[] = [
+        'role' => 'user',
+        'content' => $context_content
+    ];
+
+    // 3. Provide the specific refinement instructions, including advanced settings
+    // This is the action the model needs to take.
+    $messages[] = [
+        'role' => 'user',
+        'content' => [
+            [
+                'type' => 'text',
+                'text' => "Convert/Refine the provided content based on the following instructions: " . $update_description . $advanced_instruction
+            ],
+        ]
+    ];
+    
+    return $messages;
+}
+
+public static function prepare_refine_description_messages_gemini_yt(
+    $refine_system_prompt,
+    $current_code, 
+    $update_description,
+    $original_description,
+    $logo,
+    $yt_url,
+    $target_keyword, 
+    $audience_level, 
+    $desired_tone,
+    $language, // NEW
+    $required_length, // NEW
+    $call_to_action    // NEW
+) {
+    $messages = [];
+    $final_user_parts = [];
+
+    // 1. Initial system prompt (as the first user message)
+    $messages[] = [
+        'role' => 'user',
+        'content' => $refine_system_prompt
+    ];
+    
+    // --- NEW: Conditionally build the refinement instruction based on advanced fields ---
+    $advanced_instruction = "";
+    if (!empty($target_keyword)) {
+        $advanced_instruction .= " Target SEO Keyword: '" . trim($target_keyword) . "'.";
+    }
+    if (!empty($audience_level)) {
+        $advanced_instruction .= " Audience Level: '" . trim($audience_level) . "'.";
+    }
+    if (!empty($desired_tone)) {
+        $advanced_instruction .= " Desired Tone: '" . trim($desired_tone) . "'.";
+    }
+    if (!empty($language)) {
+        $advanced_instruction .= " Output Language: '" . trim($language) . "'.";
+    }
+    if (!empty($required_length)) {
+        $advanced_instruction .= " Required Length: '" . trim($required_length) . "'.";
+    }
+    if (!empty($call_to_action)) {
+        $advanced_instruction .= " MANDATORY Call to Action: '" . trim($call_to_action) . "'.";
+    }
+    // --- END NEW ---
+    
+    // 2. Add Video URL (if not empty) and its primary instruction
+    if (!empty($yt_url)) {
+        // Add the video file data part (this maps to 'fileData' in prepare_payload)
+        $final_user_parts[] = [
+            'type' => 'file_data', 
+            'fileData' => [
+                'mimeType' => 'video/*', 
+                'fileUri' => $yt_url 
+            ]
+        ];
+        // Add the instruction to use the video as the main source
+        $instruction_text = "Convert the ATTACHED YOUTUBE VIDEO content into a blog post.";
+    } else {
+        // If NO URL, base instruction on the update description
+        $instruction_text = "Convert the provided context into a blog post.";
+    }
+    
+    // 3. Add context text and refinement instructions
+
+    // Add context for the existing title/desc (current_code)
+    $context_parts = [
+        [
+            'type' => 'text',
+            'text' => "Here is the existing title/description content (if applicable): " . $current_code
+        ]
+    ];
+    if (!empty($original_description)) {
+        $context_parts[] = [
+            'type' => 'text',
+            'text' => "Original instructions for context: " . $original_description
+        ];
+    }
+
+    // Add the main instruction, now including the advanced settings
+    $instruction_parts = [
+        'type' => 'text',
+        'text' => $instruction_text . " Apply these specific changes: " . $update_description . $advanced_instruction
+    ];
+    
+    // Combine all parts for the final user message
+    $final_user_parts = array_merge(
+        $final_user_parts, // Contains video Part
+        $context_parts,    // Contains current_code context
+        [$instruction_parts] // Contains the final prompt
+    );
+
+    $messages[] = [
+        'role' => 'user',
+        'content' => $final_user_parts
+    ];
+    
+    return $messages;
+}
 
     public static function prepare_messages_gemini($mode, $output_type, $system_prompt, $url, $screenshot, $description) {
         

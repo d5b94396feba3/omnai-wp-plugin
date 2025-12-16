@@ -24,6 +24,16 @@ window.F2E = window.F2E || {};
     const $f2eCodeContainer = Elements.$f2eCodeContainer;
     const $resultContent = Elements.$resultContent;
     const $siteURL = Elements.$siteURL; // <--- ADDED LINE
+
+    // NEW ADVANCED FIELDS REFERENCES
+    const $targetKeyword = Elements.$targetKeyword;
+    const $audienceLevel = Elements.$audienceLevel;
+    const $desiredTone = Elements.$desiredTone;
+    const $language = Elements.$language; // NEW
+    const $requiredLength = Elements.$requiredLength; // NEW
+    const $callToAction = Elements.$callToAction; // NEW
+    // END NEW
+    
     const { i18n } = F2E.Constants || {};
 
     /**
@@ -104,7 +114,7 @@ window.F2E = window.F2E || {};
         $('.f2e-tabs-nav .f2e-tab-button').prop('disabled', true).addClass('disabled'); 
     
         $('.f2e-tab-button').removeClass('active border-[var(--primary-color)] text-[var(--primary-color)]').addClass('text-[var(--text-gray-500)]');
-        $('.f2e-tab-button[data-tab="code"]').addClass('active border-[var(--primary-color)] text-[var(--primary-color)]').removeClass('text-[var(--text-gray-500)]');
+        $('.f2e-tab-button[data-tab="preview"]').addClass('active border-[var(--primary-color)] text-[var(--primary-color)]').removeClass('text-[var(--text-gray-500)]');
         $('#code-tab').removeClass('active').addClass('hidden');
         $('#preview-tab').removeClass('active').addClass('hidden');
     
@@ -116,6 +126,15 @@ window.F2E = window.F2E || {};
         const description = $description.val().trim();
         const contentType = F2E.Utils.getContentType();
     
+        // NEW: Get Advanced Settings Values
+        const targetKeyword = $targetKeyword.val().trim();
+        const audienceLevel = $audienceLevel.val().trim();
+        const desiredTone = $desiredTone.val().trim();
+        const language = $language.val().trim(); // NEW
+        const requiredLength = $requiredLength.val().trim(); // NEW
+        const callToAction = $callToAction.val().trim(); // NEW
+        // END NEW
+        
         if (!description) {
             alert(i18n.please_enter_description || 'Please enter a description');
             F2E.Utils.resetGenerateButton();
@@ -144,6 +163,15 @@ window.F2E = window.F2E || {};
         formData.append('current_code', currentCode);
         formData.append('content_type', contentType);
         formData.append('siteURL', $siteURLValue);
+
+        // NEW: Append Advanced Settings to formData
+        formData.append('target_keyword', targetKeyword);
+        formData.append('audience_level', audienceLevel);
+        formData.append('desired_tone', desiredTone);
+        formData.append('language', language); // NEW
+        formData.append('required_length', requiredLength); // NEW
+        formData.append('call_to_action', callToAction); // NEW
+        // END NEW
     
         try {
             const data = await new Promise((resolve, reject) => {
@@ -182,7 +210,7 @@ window.F2E = window.F2E || {};
                 $clearButton.removeClass('f2e-hidden');
                 $loading.addClass('f2e-hidden');
     
-                $('#code-tab').addClass('active').removeClass('hidden');
+                $('#preview-tab').addClass('active').removeClass('hidden');
     
                 const outputContent = data.content || 'No content generated.'; 
                 const title = data.title || '';

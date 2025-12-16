@@ -29,6 +29,12 @@ class GenerateHandler {
         $title = ""; // Initialize for extracted title
         $content = ""; // Initialize for extracted content (HTML/text)
         $tags = []; // Initialize for extracted tags
+        $target_keyword = ""; 
+        $audience_level = ""; 
+        $desired_tone = ""; 
+        $language = ""; // NEW FIELD
+        $required_length = ""; // NEW FIELD
+        $call_to_action = ""; // NEW FIELD
         $result = ['usage' => []]; // Initialize $result with an empty usage array
         $usage = []; // Initialize $usage variable
         $preview_id = null; // Initialize preview ID
@@ -38,12 +44,26 @@ class GenerateHandler {
         $siteURL = $request->get_param('siteURL');
         $output_type="html"; // Fixed output type for this handler
 
+        // NEW: Retrieve Advanced Settings
+        $target_keyword = $request->get_param('target_keyword');
+        $audience_level = $request->get_param('audience_level');
+        $desired_tone = $request->get_param('desired_tone');
+        $language = $request->get_param('language'); // NEW
+        $required_length = $request->get_param('required_length'); // NEW
+        $call_to_action = $request->get_param('call_to_action'); // NEW
+        // END NEW
+
         error_log('iterations: ' . $iterations);
         error_log('description: ' . $description);
         error_log('current_code: ' . $current_code);
         error_log('siteUR2L: ' . $siteURL);
-        // error_log('url: ' . $url);
-        // return;
+        error_log('target_keyword: ' . $target_keyword);
+        error_log('audience_level: ' . $audience_level);
+        error_log('desired_tone: ' . $desired_tone);
+        error_log('language: ' . $language); // NEW
+        error_log('required_length: ' . $required_length); // NEW
+        error_log('call_to_action: ' . $call_to_action); // NEW
+
 
         $content_type = $request->get_param('content_type') ?: 'medium';
     
@@ -56,27 +76,10 @@ class GenerateHandler {
                 $system_prompt = ApiHandler::get_yt_facebook_system_prompt_content();
                 error_log('system_prompt: ' . $system_prompt);
             }
-            
-            // if ($content_type === 'devio') {
-            //     $system_prompt = ApiHandler::get_devio_system_prompt_content();
-            // } 
-            // else if($content_type === 'medium') {
-            //     $system_prompt = ApiHandler::get_medium_system_prompt_content();
-            // }
-            // else if($content_type === 'linkedin') {
-            //     $system_prompt = ApiHandler::get_linkedin_system_prompt_content();
-            // }
-            // else if($content_type === 'x-twitter') {
-            //     $system_prompt = ApiHandler::get_x_twitter_system_prompt_content();
-            // }
+            // ... (rest of content type logic remains the same)
             else if($content_type === 'website') {
                 $system_prompt = ApiHandler::get_yt_website_system_prompt_content();
             }
-            // else if($content_type === 'facebook') {
-            //     error_log('URL facebook content_type: ' . $content_type);
-            //     $system_prompt = ApiHandler::get_yt_facebook_system_prompt_content();
-            //     error_log('system_prompt: ' . $system_prompt);
-            // }
         }
         else if ($content_type === 'devio') {
             $system_prompt = ApiHandler::get_devio_system_prompt_content();
@@ -96,6 +99,11 @@ class GenerateHandler {
         else if($content_type === 'facebook') {
             error_log('content_type: ' . $content_type);
             $system_prompt = ApiHandler::get_facebook_system_prompt_content();
+            error_log('system_prompt: ' . $system_prompt);
+        }
+        else if($content_type === 'instagram') {
+            error_log('content_type: ' . $content_type);
+            $system_prompt = ApiHandler::get_instagram_system_prompt_content();
             error_log('system_prompt: ' . $system_prompt);
         }
 
@@ -161,8 +169,14 @@ class GenerateHandler {
                 error_log('Initializing Google Gemini for generating HTML from the description');
                 // Option 2 - Gemini
                 $ai_handler = new Gemini_Handler();
-                $messages = $ai_handler->prepare_messages_gemini_for_description($mode, $output_type, $system_prompt, $url, $logo, $description);
-                // $messages = $ai_handler->prepare_messages_gemini_for_description_yt($mode, $output_type, $system_prompt, $url, $logo, $description, $siteURL);
+                
+                // UPDATED CALL: Pass all advanced parameters
+                $messages = $ai_handler->prepare_messages_gemini_for_description(
+                    $mode, $output_type, $system_prompt, $url, $logo, $description, 
+                    $target_keyword, $audience_level, $desired_tone, 
+                    $language, $required_length, $call_to_action // NEW PARAMS
+                );
+                // $messages = $ai_handler->prepare_messages_gemini_for_description_yt($mode, $output_type, $system_prompt, $url, $logo, $description, $siteURL); // Original commented-out line
 
                 $result = $ai_handler->generate_content_with_agentic($messages, $iterations);
 
@@ -176,6 +190,11 @@ class GenerateHandler {
                 $content = $extracted_data['content'];
                 $tags = $extracted_data['tags'];
                 $image_concept = $extracted_data['image'];
+
+
+                // --- NEW VALIDATION CALL ---
+                self::validate_extracted_metadata($title, $content, $tags);
+                // ---------------------------
 
                 // Only generate image if we have a title/concept
                 if (!empty($title)) {
@@ -214,15 +233,20 @@ class GenerateHandler {
                 //     $update_description,
                 //     $description,
                 //     $logo
-                // );
+                // ); // Original commented-out line
 
+                // UPDATED CALL: Pass all advanced parameters to the refinement function
                 $messages = $ai_handler->prepare_refine_description_messages_gemini_yt(
                     $refine_system_prompt, 
                     $current_code, 
                     $update_description,
                     $description,
                     $logo,
-                    $siteURL
+                    $siteURL,
+                    $target_keyword,
+                    $audience_level,
+                    $desired_tone,
+                    $language, $required_length, $call_to_action // NEW PARAMS
                 );
 
                 $result = $ai_handler->generate_content_with_agentic($messages, $iterations);
@@ -236,6 +260,10 @@ class GenerateHandler {
                 $content = $extracted_data['content'];
                 $tags = $extracted_data['tags'];
                 $image_concept = $extracted_data['image'];
+
+                // --- NEW VALIDATION CALL ---
+                self::validate_extracted_metadata($title, $content, $tags);
+                // ---------------------------
 
                 // Only generate image if we have a title/concept
                 if (!empty($title)) {
@@ -296,5 +324,39 @@ class GenerateHandler {
                 'max_size' => '20MB'
             ], is_numeric($e->getCode()) ? $e->getCode() : 400);
         }
+    }
+
+    /**
+     * Checks if the extracted data is sufficient for a valid post.
+     *
+     * @param string $title The extracted title.
+     * @param string $content The extracted content body.
+     * @param array $tags The extracted tags array.
+     * @return bool True if validation passes.
+     * @throws \Exception If validation fails.
+     */
+    private static function validate_extracted_metadata(string $title, string $content, array $tags): bool {
+        
+        // 1. Check for valid Title
+        // 'Generated Content' is the default fallback title returned when extraction fails.
+        if (empty(trim($title)) || $title === 'Generated Content') {
+            error_log("Validation failed: Missing or default title.");
+            throw new \Exception(__('Failed to extract a valid Title. The model output was not correctly formatted JSON. Please try refining the prompt.', 'medium-post-ai'), 400);
+        }
+
+        // 2. Check for valid Content
+        // We look for a minimum length and ensure it's not too short.
+        if (empty(trim($content)) || strlen(trim($content)) < 50) {
+            error_log("Validation failed: Content too short or empty.");
+            throw new \Exception(__('Failed to extract a meaningful Content body (minimum 50 characters required). The model output may be malformed or too brief.', 'medium-post-ai'), 400);
+        }
+
+        // 3. Check for Tags array
+        if (empty($tags) || !is_array($tags) || count($tags) < 1) {
+            error_log("Validation failed: Tags missing or empty.");
+            throw new \Exception(__('Failed to extract required Tags. Please ensure the model returned a valid "tags" array in the JSON.', 'medium-post-ai'), 400);
+        }
+        
+        return true;
     }
 }

@@ -29,6 +29,7 @@
                                 <option value="devio">Dev.io Post</option>
                                 <option value="linkedin">Linkedin Post</option>
                                 <option value="facebook">Facebook Post</option>
+                                <option value="instagram">Instagram Post</option>
                                 <option value="x-twitter">X (Formaly Known Twitter) Post</option>
                                 <option value="website">Website Blog Post</option>
                             </select>
@@ -38,25 +39,35 @@
                                 </svg>
                             </div>
                         </div>
-                        <p class="f2e-setting-description text-[var(--text-gray-500)] text-sm mt-2">Choose between Medium Post or Dev.io Post format</p>
+                        <p class="f2e-setting-description text-[var(--text-gray-500)] text-sm mt-2">Choose Post format</p>
                         
                     </div>
 
                     <div class="f2e-textarea-wrapper flex-1">
                         <label for="f2e-description" class="sr-only">Description for content</label>
                         <input type="hidden" name="desc-tag-name" value="">
-                        <textarea id="f2e-description" name="description" class="placeholder:text-sm w-full p-4 border border-[var(--border-gray-200)] rounded-lg focus:ring-2 focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)] h-full resize-y transition-colors duration-200 text-[var(--text-gray-800)] bg-[var(--bg-white)]" placeholder="Generate a Medium post about ai automation..."></textarea>
+                        <textarea id="f2e-description" name="description" class="placeholder:text-sm w-full p-4 border border-[var(--border-gray-200)] rounded-lg focus:ring-2 focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)] h-full resize-y transition-colors duration-200 text-[var(--text-gray-800)] bg-[var(--bg-white)]" 
+                        placeholder="Give a topic name or description or any text..."></textarea>
                     </div>
 
-                    <div class="f2e-setting-group mt-6">
+                    <!-- <div class="f2e-setting-group mt-6">
                         <label class="f2e-setting-label block text-lg font-medium text-[var(--text-gray-700)] mb-2">Iterations <span class="text-[var(--text-red-500)]">*</span></label>
                         <div class="f2e-iteration-selector flex items-center gap-2 bg-[var(--bg-gray-50)] p-1 rounded-lg border border-[var(--border-gray-200)] shadow-inner" role="radiogroup" aria-label="Number of iterations for generation">
                             <button type="button" class="f2e-iteration-option px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-offset-1" data-value="1" aria-pressed="false" aria-label="1 Iteration">1</button>
                             <button type="button" class="f2e-iteration-option active px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-offset-1" data-value="2" aria-pressed="true" aria-label="2 Iterations">2</button>
                         </div>
                         <p class="f2e-setting-description text-[var(--text-gray-500)] text-sm mt-2">Recommended: 2. More iterations can improve result output but may take longer.</p>
+                    </div> -->
+
+                    <div class="f2e-setting-group mt-6">
+                        <button id="f2e-advanced-settings-button" type="button" class="f2e-button f2e-button-secondary py-2 px-4 rounded-lg border border-[var(--gray-300)] text-[var(--text-gray-700)] hover:bg-[var(--bg-gray-100)] focus:outline-none focus:ring-2 focus:ring-[var(--gray-300)] flex items-center gap-2 transition-colors duration-200">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 20v-8M12 4v4M4 12h4M16 12h4M6 16v-2h12v2M8 8v8M16 8v8"/>
+                            </svg>
+                            Advanced Settings
+                        </button>
                     </div>
-                </div>
+                    </div>
 
                 <button id="f2e-generate-button" class="f2e-button f2e-button-primary py-3 px-6 text-lg font-semibold w-full mt-8 flex items-center justify-center gap-3 rounded-xl shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-offset-2 transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed" aria-label="Generate content with 100 points">
                     <span class="f2e-button-content flex items-center gap-2">
@@ -164,5 +175,99 @@
             <path d="M12 13V9M12 17V16.5M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
         Important: Your input and generated content are not stored. All data will be cleared upon page refresh.
+    </div>
+
+    <div id="f2e-advanced-modal" class="f2e-modal fixed inset-0 z-[1000] bg-black bg-opacity-75 hidden items-center justify-center p-4 transition-opacity duration-300" aria-modal="true" role="dialog" tabindex="-1">
+        <div class="f2e-modal-content bg-[var(--bg-white)] rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-hidden flex flex-col transform transition-transform duration-300 scale-95" style="z-index: 1001;">
+            
+            <div class="f2e-modal-header flex justify-between items-center p-4 border-b border-[var(--border-gray-200)]">
+                <h5 class="text-xl font-semibold text-[var(--text-gray-800)]">Advanced Content Settings</h5>
+                <button type="button" class="f2e-close-modal text-[var(--text-gray-500)] hover:text-[var(--text-gray-800)] transition-colors" aria-label="Close modal">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6L18 18"/></svg>
+                </button>
+            </div>
+            
+            <div class="f2e-modal-body p-6 flex-1 overflow-y-auto space-y-5">
+                
+                <div class="f2e-form-group">
+                    <label for="f2e-target-keyword" class="block text-lg font-medium text-gray-700 mb-2">Target Keyword</label>
+                    <input
+                        type="text"
+                        id="f2e-target-keyword"
+                        placeholder="React Performance Optimization"
+                        class="w-full px-4 py-2 text-sm text-gray-800 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
+                        style="border-radius: 5px;"
+                    >
+                    <p class="text-gray-500 text-sm mt-2">The primary keyword for SEO.</p>
+                </div>
+
+                <div class="f2e-form-group">
+                    <label for="f2e-audience-level" class="block text-lg font-medium text-gray-700 mb-2">Audience Level</label>
+                    <select id="f2e-audience-level" class="w-full p-3 border border-[var(--border-gray-200)] rounded-lg focus:ring-2 focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)] bg-white text-[var(--text-gray-800)] appearance-none cursor-pointer transition-colors duration-200">
+                        <option value="">(Select Level)</option>
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                    <p class="text-gray-500 text-sm mt-2">The required technical level of the audience.</p>
+                </div>
+                
+                <div class="f2e-form-group">
+                    <label for="f2e-desired-tone" class="block text-lg font-medium text-gray-700 mb-2">Desired Tone</label>
+                    <select id="f2e-desired-tone" class="w-full p-3 border border-[var(--border-gray-200)] rounded-lg focus:ring-2 focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)] bg-white text-[var(--text-gray-800)] appearance-none cursor-pointer transition-colors duration-200">
+                        <option value="">(Select Tone)</option>
+                        <option value="Tutorial/Instructive">Tutorial/Instructive</option>
+                        <option value="Opinion/Thought Leadership">Opinion/Thought Leadership</option>
+                        <option value="In-depth Analysis">In-depth Analysis</option>
+                        <option value="Casual/Informal">Casual/Informal</option>
+                        <option value="Formal/Academic">Formal/Academic</option>
+                    </select>
+                    <p class="text-gray-500 text-sm mt-2">The style and tone of the generated content.</p>
+                </div>
+
+                <div class="f2e-form-group">
+                    <label for="f2e-language" class="block text-lg font-medium text-gray-700 mb-2">Language</label>
+                    <select id="f2e-language" class="w-full p-3 border border-[var(--border-gray-200)] rounded-lg focus:ring-2 focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)] bg-white text-[var(--text-gray-800)] appearance-none cursor-pointer transition-colors duration-200">
+                        <option value="English">English</option>
+                        <option value="Spanish">Spanish</option>
+                        <option value="French">French</option>
+                        <option value="German">German</option>
+                        <option value="Japanese">Japanese</option>
+                        <option value="Chinese">Chinese</option>
+                    </select>
+                    <p class="text-gray-500 text-sm mt-2">The language for the generated output.</p>
+                </div>
+
+                <div class="f2e-form-group">
+                    <label for="f2e-required-length" class="block text-lg font-medium text-gray-700 mb-2">Required Length</label>
+                    <select id="f2e-required-length" class="w-full p-3 border border-[var(--border-gray-200)] rounded-lg focus:ring-2 focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)] bg-white text-[var(--text-gray-800)] appearance-none cursor-pointer transition-colors duration-200">
+                        <option value="">(Default/Auto)</option>
+                        <option value="Short (approx 300 words)">Short (approx 300 words)</option>
+                        <option value="Medium (approx 500-800 words)">Medium (approx 500-800 words)</option>
+                        <option value="Long (approx 1000-1500 words)">Long (approx 1000-1500 words)</option>
+                        <option value="In-depth (2000+ words)">In-depth (2000+ words)</option>
+                    </select>
+                    <p class="text-gray-500 text-sm mt-2">Specify the approximate length of the final content.</p>
+                </div>
+
+                <div class="f2e-form-group">
+                    <label for="f2e-call-to-action" class="block text-lg font-medium text-gray-700 mb-2">Call to Action (CTA)</label>
+                    <textarea 
+                        id="f2e-call-to-action" 
+                        placeholder="e.g., Subscribe to our newsletter for more tips!"
+                        class="w-full px-4 py-2 text-sm text-gray-800 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
+                        style="border-radius: 5px; height: 80px;"
+                    ></textarea>
+                    <p class="text-gray-500 text-sm mt-2">A specific instruction to conclude the post.</p>
+                </div>
+
+            </div>
+            
+            <div class="f2e-modal-footer flex justify-end p-4 border-t border-[var(--border-gray-200)]">
+                <button type="button" class="f2e-close-modal f2e-button f2e-button-primary py-2 px-6 text-base font-medium rounded-xl flex items-center gap-2 shadow-md hover:shadow-lg transition-all duration-200">
+                    Done
+                </button>
+            </div>
+        </div>
     </div>
 </div>

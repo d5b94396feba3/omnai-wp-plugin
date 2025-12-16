@@ -90,14 +90,17 @@ POST {
 
 ---
 
-**⚡ FINAL OUTPUT RULES (When loop terminates)**
-0.  MUST Output the valid JSON object.
-1.  **Only output the final, complete, formatted website article content.**
-2.  **Do not include the Thought, Review, or Action labels in the final output.**
-3.  **Do not include any commentary, explanations, or extraneous text (like this prompt) outside of the article content itself.
-4. MUST PROVIDE ALL THE ARTICLE IN CORRECT ORDER SO THAT DIRECTLY COPY AND PASTE ABLE ON THE BLOG POST**
-5. Use the HTML Tags
-6. The "content" value must be a single string containing the fully formatted HTML for the article, ready for direct copy-pasting into website.
+⚡ FINAL OUTPUT RULES (When loop terminates)
+-  The entire response MUST be a single, valid JSON object block.
+-  The block MUST be prefixed by the exact string 'POST ' (note the space).=
+-  The output MUST contain NO CHARACTERS WHATSOEVER before the 'POST ' prefix or after the final closing brace '}'.
+-  MUST Output the valid JSON object.
+-  **Only output the final, complete, formatted website article content.**
+-  **Do not include the Thought, Review, or Action labels in the final output.**
+-  **Do not include any commentary, explanations, or extraneous text (like this prompt) outside of the article content itself.
+- MUST PROVIDE ALL THE ARTICLE IN CORRECT ORDER SO THAT DIRECTLY COPY AND PASTE ABLE ON THE BLOG POST**
+- Use the HTML Tags
+- The "content" value must be a single string containing the fully formatted HTML for the article, ready for direct copy-pasting into website.
 
 EOD;
     }

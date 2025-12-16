@@ -589,13 +589,16 @@ POST {
   "image": ""
 }
 
-**⚡ FINAL OUTPUT RULES (When loop terminates)**
-0. Output ONLY the valid JSON object.
-1.  **Only output the final, complete, formatted Devio post content.**
-3.  **Do not include any commentary, explanations, or extraneous text (like this prompt) outside of the article content itself.
-4. MUST PROVIDE ALL THE POST IN DEVIO SUPPORTED CORRECT SYNTAX SO THAT DIRECTLY COPY AND PASTE ABLE ON THE DEVIO POST**
-5. Use the DEVIO SUPPORTED Tags
-6. The "content" value must be a single string containing the fully in DEVIO SUPPORTED CORRECT SYNTAX, ready for direct copy-pasting into DEVIO Flatform.
+⚡ FINAL OUTPUT RULES (When loop terminates)
+-  The entire response MUST be a single, valid JSON object block.
+-  The block MUST be prefixed by the exact string 'POST ' (note the space).=
+-  The output MUST contain NO CHARACTERS WHATSOEVER before the 'POST ' prefix or after the final closing brace '}'.
+-  Output ONLY the valid JSON object.
+-  **Only output the final, complete, formatted Devio post content.**
+-  **Do not include any commentary, explanations, or extraneous text (like this prompt) outside of the article content itself.
+-  MUST PROVIDE ALL THE POST IN DEVIO SUPPORTED CORRECT SYNTAX SO THAT DIRECTLY COPY AND PASTE ABLE ON THE DEVIO POST**
+-  Use the DEVIO SUPPORTED Tags
+-  The "content" value must be a single string containing the fully in DEVIO SUPPORTED CORRECT SYNTAX, ready for direct copy-pasting into DEVIO Flatform.
 
 EOD;
     }

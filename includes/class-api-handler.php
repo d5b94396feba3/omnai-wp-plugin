@@ -682,6 +682,41 @@ class ApiHandler {
     }
 
 
+    public static function get_instagram_system_prompt_content($desc_tag_name = '') {
+        self::clean_output_buffers();
+
+        $prompt_file = MPAI_PLUGIN_DIR . 'prompts/system/blog/class-agentic-prompt-generate-blog-instagram.php';
+        
+        error_log('In get_instagram_system_prompt_content: ' . $prompt_file);
+        
+        if (!file_exists($prompt_file)) {
+            error_log('Prompt file not found: ' . $prompt_file);
+            return self::get_default_system_prompt();
+        }
+
+        ob_start();
+        $included = include $prompt_file;
+        $output = ob_get_clean();
+
+        if (!empty($output)) {
+            error_log('Unexpected output in prompt file: ' . substr($output, 0, 200));
+        }
+
+        if (!class_exists('MediumPostAI\PromptGenerateHTML')) {
+            error_log('PromptGenerateHTML class not found after inclusion');
+            return self::get_default_system_prompt();
+        }
+
+        try {
+            $prompt = PromptGenerateHTML::get_system_prompt();
+            return is_string($prompt) ? trim($prompt) : self::get_default_system_prompt();
+        } catch (\Exception $e) {
+            error_log('Prompt generation error: ' . $e->getMessage());
+            return self::get_default_system_prompt();
+        }
+    }
+
+
     public static function get_facebook_system_prompt_content($desc_tag_name = '') {
         self::clean_output_buffers();
 
