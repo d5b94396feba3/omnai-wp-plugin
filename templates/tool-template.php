@@ -8,17 +8,49 @@
             <div class="f2e-card f2e-description-field f2e-description-section border border-[var(--border-gray-100)] rounded-xl shadow-lg bg-[var(--bg-white)] overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-[var(--blue-200)] h-full p-6 flex flex-col">
                 <div class="f2e-form-group space-y-6 flex-1 flex flex-col">
                     
-
-                <div id="panel-website" role="tabpanel" aria-labelledby="tab-website" class="tab-panel">
-                    <label for="website-url-input" class="block text-lg font-medium text-gray-700 mb-2">Youtube Video URL</label>
-                    <input
-                    type="url"
-                    id="f2e-site-url"
-                    placeholder="<?php esc_attr_e('https://www.youtube.com/watch?v=LO5OMv7J1h8', 'figma-to-elementor'); ?>"
-                    class="w-full px-4 py-2 text-sm text-gray-800 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
-                    style="border-radius: 5px;"
-                    >
-                    <p class="text-gray-500 text-sm mt-2">Enter the public URL of a video you want to explain or blog.</p>
+                    <div class="f2e-toggle-switch flex items-center justify-between p-0 m-0">
+                        <label for="f2e-input-mode-toggle" class="f2e-switch-label text-base font-semibold text-[var(--text-gray-800)]">Text</label>
+                        <label class="f2e-switch">
+                            <input type="checkbox" id="f2e-input-mode-toggle">
+                            <span class="f2e-slider"></span>
+                        </label>
+                        <label for="f2e-input-mode-toggle" class="f2e-switch-label text-base font-semibold text-[var(--text-gray-800)]">Youtube</label>
+                    </div>
+                    <div id="f2e-text-input-container">
+                        <div class="f2e-textarea-wrapper flex-1">
+                            <label for="f2e-description" class="sr-only">Description for content</label>
+                            <input type="hidden" name="desc-tag-name" value="">
+                            <textarea id="f2e-description" name="description" class="placeholder:text-sm w-full p-4 border border-[var(--border-gray-200)] rounded-lg focus:ring-2 focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)] h-full resize-y transition-colors duration-200 text-[var(--text-gray-800)] bg-[var(--bg-white)]" 
+                            placeholder="Give a topic name or description or any text..."></textarea>
+                            <p class="text-gray-500 text-sm mt-2">Enter the topic description or any text to generate content.</p>
+                        </div>
+                    </div>
+                    <div id="f2e-youtube-input-container" class="f2e-hidden">
+                        <div id="panel-website" role="tabpanel" aria-labelledby="tab-website" class="tab-panel">
+                            <label for="website-url-input" class="block text-lg font-medium text-gray-700 mb-2">Youtube Video URL</label>
+                            <input
+                            type="url"
+                            id="f2e-site-url"
+                            placeholder="<?php esc_attr_e('https://www.youtube.com/watch?v=LO5OMv7J1h8', 'figma-to-elementor'); ?>"
+                            class="w-full px-4 py-2 text-sm text-gray-800 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
+                            style="border-radius: 5px;"
+                            >
+                            <p class="text-gray-500 text-sm mt-2 mb-4">Enter the public URL of a video you want to explain or blog.</p>
+                        </div>
+                        
+                        <button type="button" id="f2e-toggle-yt-description" class="f2e-button f2e-button-secondary py-2 px-4 rounded-lg border border-[var(--gray-300)] text-[var(--text-gray-700)] hover:bg-[var(--bg-gray-100)] focus:outline-none focus:ring-2 focus:ring-[var(--gray-300)] flex items-center gap-2 transition-colors duration-200 text-sm">
+                            <span class="f2e-toggle-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                            </span>
+                            Add Specific Instructions (Optional)
+                        </button>
+                        
+                        <div id="f2e-description-yt-container" class="mt-4">
+                        <div class="f2e-textarea-wrapper flex-1">
+                            <label for="f2e-description-yt" class="block text-sm font-medium text-gray-700 mb-1">Additional Instructions for AI</label>
+                            <textarea id="f2e-description-yt" name="description-yt" class="w-full p-4 border border-[var(--border-gray-200)] rounded-lg h-32 bg-[var(--bg-white)]" placeholder="E.g., Focus only on the technical details..."></textarea>
+                        </div>
+                    </div>
                     </div>
                     
                     <div class="f2e-setting-group">
@@ -43,22 +75,6 @@
                         
                     </div>
 
-                    <div class="f2e-textarea-wrapper flex-1">
-                        <label for="f2e-description" class="sr-only">Description for content</label>
-                        <input type="hidden" name="desc-tag-name" value="">
-                        <textarea id="f2e-description" name="description" class="placeholder:text-sm w-full p-4 border border-[var(--border-gray-200)] rounded-lg focus:ring-2 focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)] h-full resize-y transition-colors duration-200 text-[var(--text-gray-800)] bg-[var(--bg-white)]" 
-                        placeholder="Give a topic name or description or any text..."></textarea>
-                    </div>
-
-                    <!-- <div class="f2e-setting-group mt-6">
-                        <label class="f2e-setting-label block text-lg font-medium text-[var(--text-gray-700)] mb-2">Iterations <span class="text-[var(--text-red-500)]">*</span></label>
-                        <div class="f2e-iteration-selector flex items-center gap-2 bg-[var(--bg-gray-50)] p-1 rounded-lg border border-[var(--border-gray-200)] shadow-inner" role="radiogroup" aria-label="Number of iterations for generation">
-                            <button type="button" class="f2e-iteration-option px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-offset-1" data-value="1" aria-pressed="false" aria-label="1 Iteration">1</button>
-                            <button type="button" class="f2e-iteration-option active px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-offset-1" data-value="2" aria-pressed="true" aria-label="2 Iterations">2</button>
-                        </div>
-                        <p class="f2e-setting-description text-[var(--text-gray-500)] text-sm mt-2">Recommended: 2. More iterations can improve result output but may take longer.</p>
-                    </div> -->
-
                     <div class="f2e-setting-group mt-6">
                         <button id="f2e-advanced-settings-button" type="button" class="f2e-button f2e-button-secondary py-2 px-4 rounded-lg border border-[var(--gray-300)] text-[var(--text-gray-700)] hover:bg-[var(--bg-gray-100)] focus:outline-none focus:ring-2 focus:ring-[var(--gray-300)] flex items-center gap-2 transition-colors duration-200">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -67,7 +83,7 @@
                             Advanced Settings
                         </button>
                     </div>
-                    </div>
+                </div>
 
                 <button id="f2e-generate-button" class="f2e-button f2e-button-primary py-3 px-6 text-lg font-semibold w-full mt-8 flex items-center justify-center gap-3 rounded-xl shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-offset-2 transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed" aria-label="Generate content with 100 points">
                     <span class="f2e-button-content flex items-center gap-2">

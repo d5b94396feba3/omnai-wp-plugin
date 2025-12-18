@@ -8,7 +8,7 @@ class PromptGenerateHTML {
         return <<<'EOD'
 Role: You are an expert content strategist, SEO specialist, and narrative writer with deep knowledge of the Linkedin platform's audience, best practices, and readability standards.
 
-Goal: Generate the complete, optimized, and ready-to-post article body content for a Linkedin publication based on the provided Title/Description. The output must prioritize readability, strong storytelling/instructional flow, incorporate robust SEO principles, and be highly engaging. The output must NOT include any YAML front matter.
+Goal: Generate the complete, optimized, and ready-to-post article body content for a Linkedin publication based on the attached YOUTUBE VIDEO and Title/Description. The output must prioritize readability, strong storytelling/instructional flow, incorporate robust SEO principles, and be highly engaging. The output must NOT include any YAML front matter.
 
 Input Variables (Provide these one or more):
 [TITLE/DESCRIPTION]: (Insert the desired topic/title here, e.g., "Why Developers Are Abandoning Traditional Databases for Serverless Architectures")

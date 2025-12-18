@@ -2381,3 +2381,254 @@ div#f2e-console-messages {
     border-bottom-color: transparent !important; 
     background-color: transparent !important; 
 }
+
+
+/* --- Toggle Switch Styles (Corrected) --- */
+
+.f2e-toggle-switch {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem; 
+    padding: 0;
+    margin-bottom: 1.5rem; /* Increased spacing */
+}
+
+.f2e-switch-label {
+    font-size: 1rem; 
+    font-weight: 600;
+    color: var(--text-gray-800); 
+    user-select: none; 
+    transition: color 0.3s ease;
+    cursor: pointer;
+}
+
+/* Highlight active label */
+#f2e-input-mode-toggle:not(:checked) ~ .f2e-switch-label:first-of-type {
+    color: var(--primary-color);
+}
+#f2e-input-mode-toggle:checked ~ .f2e-switch-label:last-of-type {
+    color: var(--primary-color);
+}
+
+
+.f2e-switch {
+    position: relative;
+    display: inline-block;
+    width: 3.2rem;  /* Increased width for a cleaner look */
+    height: 1.8rem; /* Increased height */
+    min-width: 3.2rem;
+}
+
+.f2e-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.f2e-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #d1d5db; /* Gray background when OFF */
+    border-radius: 1.8rem; /* Fully rounded */
+    transition: background-color 0.3s ease;
+}
+
+.f2e-slider::before {
+    position: absolute;
+    content: '';
+    height: 1.4rem; /* Knob size */
+    width: 1.4rem;  
+    left: 0.2rem;  
+    bottom: 0.2rem; 
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+#f2e-input-mode-toggle:checked + .f2e-slider {
+    background-color: var(--primary-color); 
+}
+
+#f2e-input-mode-toggle:checked + .f2e-slider::before {
+    transform: translateX(1.4rem); /* Move knob to the right */
+}
+
+/* --- End Toggle Switch Styles --- */
+
+/* Textarea and URL Input Styling */
+#f2e-text-input-container, #f2e-youtube-input-container {
+    transition: opacity 0.3s ease;
+}
+
+.f2e-textarea-wrapper textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 12px 15px;
+    font-size: 1rem;
+    border: 1px solid #CBD5E1;
+    border-radius: 8px;
+    resize: vertical;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #1E293B;
+    background-color: white;
+}
+
+.f2e-textarea-wrapper textarea:focus {
+    outline: none;
+    border-color: #3B82F6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.tab-panel input {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 1rem;
+    border: 1px solid #CBD5E1;
+    border-radius: 8px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #1E293B;
+    background-color: white;
+}
+
+.tab-panel input:focus {
+    outline: none;
+    border-color: #3B82F6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+
+/* Output Settings */
+.f2e-setting-group {
+    margin-bottom: 20px;
+}
+
+.f2e-setting-label {
+    display: block;
+    font-weight: 500;
+    color: #334155;
+    margin-bottom: 10px;
+    font-size: 1rem; 
+}
+
+
+/* Iteration Selector */
+.f2e-iteration-option {
+    flex: 1;
+    padding: 12px 0;
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-weight: 600;
+    color: #64748B;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    font-size: 0.875rem;
+    min-width: 40px;
+}
+.f2e-iteration-option:hover {
+     background-image: linear-gradient(to right, var(--primary-700), var(--accent-600));
+     color: var(--bg-white);
+}
+
+.f2e-iteration-option.active {
+    background-image: linear-gradient(to right, var(--primary-color), var(--accent-600));
+    color: white;
+    border-color: #3B82F6;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+}
+
+.f2e-setting-description {
+    font-size: 0.875rem;
+    color: #718096;
+    margin-top: 12px;
+    line-height: 1.5;
+}
+
+/* Buttons */
+.f2e-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    font-size: 1rem;
+    text-decoration: none;
+}
+
+.f2e-button-primary {
+    background-image: linear-gradient(to right, var(--primary-color), var(--primary-700));
+    color: white;
+    width: 100%;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+}
+
+.f2e-button-primary:hover {
+    background: #2563EB;
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.35);
+    transform: translateY(-2px); 
+}
+
+.f2e-button-primary:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+.f2e-button-primary .f2e-button-icon {
+    margin-left: 10px;
+    width: 20px;
+    height: 20px;
+    color: white;
+}
+
+.f2e-points-badge {
+    background: #FBBF24;
+    color: #1E293B;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-left: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.f2e-button-secondary {
+    background: white;
+    border: 1px solid #CBD5E1;
+    color: #334155;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    padding: 10px 18px;
+    font-size: 0.875rem;
+}
+
+.f2e-button-secondary:hover {
+    background: #F8FAFC;
+    border-color: #A0AEC0;
+    color: #1E293B;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.f2e-button-secondary:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.f2e-button-secondary svg {
+    margin-right: 3px;
+    width: 16px;
+    height: 16px;
+    color: currentColor;
+}

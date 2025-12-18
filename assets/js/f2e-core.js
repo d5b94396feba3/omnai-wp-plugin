@@ -3,20 +3,20 @@
  * Initializes variables, creates the global F2E namespace, and runs the main setup functions.
  */
 
-// Create a namespace for the frontend functions
 window.F2E = window.F2E || {};
 
 (function($) {
     "use strict";
 
-    // --- DOM Elements & Global State ---
     if (typeof MPAI_vars === 'undefined') {
-        console.error("MPAI_vars is not defined. Ensure it is localized using wp_localize_script('f2e-core', 'MPAI_vars', ...)");
+        console.error("MPAI_vars is not defined. Ensure it is localized properly.");
         return;
     }
     
+    // --- DOM Elements ---
     const $generateButton = $('#f2e-generate-button');
     const $description = $('#f2e-description');
+    const $description_yt = $('#f2e-description-yt');
     const $copyButton = $('#f2e-copy-button');
     const $downloadButton = $('#f2e-download-button');
     const $clearButton = $('#f2e-clear-button');
@@ -33,17 +33,23 @@ window.F2E = window.F2E || {};
     const i18n = MPAI_vars.i18n || {};
     const $siteURL = $('#f2e-site-url');
 
-    // NEW ADVANCED FIELDS AND MODAL ELEMENTS
+    // Toggle Elements
+    const $inputModeToggle = $('#f2e-input-mode-toggle');
+    const $textInputContainer = $('#f2e-text-input-container');
+    const $youtubeInputContainer = $('#f2e-youtube-input-container');
+    const $ytDescriptionToggleBtn = $('#f2e-toggle-yt-description');
+    const $ytDescriptionContainer = $('#f2e-description-yt-container');
+
+    // Advanced Modal Elements
     const $advancedSettingsButton = $('#f2e-advanced-settings-button');
     const $advancedModal = $('#f2e-advanced-modal');
     const $advancedModalCloseButtons = $advancedModal.find('.f2e-close-modal');
     const $targetKeyword = $('#f2e-target-keyword');
     const $audienceLevel = $('#f2e-audience-level');
     const $desiredTone = $('#f2e-desired-tone');
-    const $language = $('#f2e-language'); // NEW
-    const $requiredLength = $('#f2e-required-length'); // NEW
-    const $callToAction = $('#f2e-call-to-action'); // NEW
-    // END NEW
+    const $language = $('#f2e-language');
+    const $requiredLength = $('#f2e-required-length');
+    const $callToAction = $('#f2e-call-to-action');
 
     const basePointsPerIteration = 100;
     
@@ -55,19 +61,18 @@ window.F2E = window.F2E || {};
     let targetProgress = 0;
     let lastGeneratedMetadata = {};
 
-    // Expose utility functions/variables via the F2E namespace for other modules
+    // Expose elements and state
     window.F2E.Elements = {
-        $generateButton, $description, $copyButton, $downloadButton, 
+        $generateButton, $description, $description_yt, $copyButton, $downloadButton, 
         $clearButton, $resultContainerActions, $resultCode, $loading, 
         $f2eCodeContainer, $resultContent, $previewButton, $iterationOptions, 
         $iterationsValue, $f2eClearConsoleButton, $contentTypeSelect, $siteURL,
-        // NEW ADVANCED FIELDS
+        $inputModeToggle, $textInputContainer, $youtubeInputContainer,
         $advancedSettingsButton, $advancedModal, $targetKeyword, $audienceLevel, $desiredTone,
-        $language, $requiredLength, $callToAction // ADDED HERE
+        $language, $requiredLength, $callToAction
     };
     window.F2E.Constants = { basePointsPerIteration, i18n };
     window.F2E.State = { pollProgress, lastProgress, loaderInterval, currentProgress, targetProgress, lastGeneratedMetadata };
-
 
     // --- Core Utility Functions ---
     window.F2E.Utils = {
@@ -85,9 +90,7 @@ window.F2E = window.F2E || {};
             const currentIterations = window.F2E.Utils.getIterations();
             const totalPoints = basePointsPerIteration * currentIterations;
             const $pointsBadge = $generateButton.find('.f2e-points-badge');
-            if ($pointsBadge.length) {
-                $pointsBadge.text(`${totalPoints} Points`);
-            }
+            if ($pointsBadge.length) { $pointsBadge.text(`${totalPoints} Points`); }
         },
         updatePlaceholderBasedOnContentType: function() {
             const contentType = window.F2E.Utils.getContentType();
@@ -102,52 +105,70 @@ window.F2E = window.F2E || {};
             const $generateButtonContent = $generateButton.find('.f2e-button-content');
             
             if (currentCode && currentCode !== 'No content generated yet.') {
-                $description.attr('placeholder', `Update current ${window.F2E.Utils.getContentTypeDisplayName().toLowerCase()} by providing instructions such as change text color`);
+                $description.attr('placeholder', `Update current ${window.F2E.Utils.getContentTypeDisplayName().toLowerCase()}...`);
                 $generateButtonContent.find('span:first').text('Update');
             } else {
                 window.F2E.Utils.updatePlaceholderBasedOnContentType();
                 $generateButtonContent.find('span:first').text('Generate');
             }
-            
             window.F2E.Utils.updateGenerateButtonPoints();
         },
         resetGenerateButton: function() {
-            if (window.F2E.Loader && window.F2E.Loader.clearLoader) {
-                window.F2E.Loader.clearLoader();
-            }
-            
+            if (window.F2E.Loader && window.F2E.Loader.clearLoader) { window.F2E.Loader.clearLoader(); }
             $loading.addClass('f2e-hidden');
             $generateButton.prop('disabled', false).removeClass('disabled');
-            
             const currentIterations = window.F2E.Utils.getIterations();
             const totalPoints = basePointsPerIteration * currentIterations;
-            const buttonText = $resultCode.text().trim() && $resultCode.text().trim() !== 'No content generated yet.' ? 'Refine' : 'Generate';
+            const buttonText = ($resultCode.text().trim() && $resultCode.text().trim() !== 'No content generated yet.') ? 'Refine' : 'Generate';
             
             $generateButton.html(`
-                <span class="f2e-button-content">
-                    ${buttonText}
-                    <span class="f2e-points-badge">${totalPoints} Points</span>
-                </span>
+                <span class="f2e-button-content">${buttonText} <span class="f2e-points-badge">${totalPoints} Points</span></span>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="f2e-button-icon">
                     <path d="M13 6L19 12L13 18M5 6L11 12L5 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             `);
-            
-            $('#f2e-iteration-heading').text(`Generating your ${window.F2E.Utils.getContentTypeDisplayName().toLowerCase()}...`);
         },
         getFeaturedImageUrl: function(imageConcept) {
             if (!imageConcept) return '';
-            // If the concept is a valid URL, use it directly.
-            if (imageConcept.startsWith('http') || imageConcept.startsWith('/')) {
-                return imageConcept;
-            }
-            // Fallback to a placeholder service using the concept text for a visual representation.
+            if (imageConcept.startsWith('http') || imageConcept.startsWith('/')) return imageConcept;
             const placeholderText = imageConcept.substring(0, 50) + (imageConcept.length > 50 ? '...' : '');
             return 'https://via.placeholder.com/740x400?text=' + encodeURIComponent(placeholderText);
         },
     };
 
     // --- Initialization Functions ---
+    
+    function initInputModeToggle() {
+        // Mode Switch Logic
+        function toggleInputFields() {
+            const isYoutube = $inputModeToggle.prop('checked');
+            if (isYoutube) {
+                $textInputContainer.addClass('f2e-hidden');
+                $youtubeInputContainer.removeClass('f2e-hidden');
+                $description.prop('disabled', true);
+                $siteURL.prop('disabled', false).focus();
+            } else {
+                $textInputContainer.removeClass('f2e-hidden');
+                $youtubeInputContainer.addClass('f2e-hidden');
+                $description.prop('disabled', false).focus();
+                $siteURL.prop('disabled', true);
+            }
+            window.F2E.Utils.updateInputUI();
+        }
+
+        $inputModeToggle.on('change', toggleInputFields);
+
+        // Youtube Additional Instructions Slider Logic
+        $ytDescriptionContainer.hide(); // Hide instructions by default
+        $ytDescriptionToggleBtn.on('click', function() {
+            $ytDescriptionContainer.slideToggle(300);
+            $(this).toggleClass('active');
+        });
+
+        // Initialize state
+        toggleInputFields();
+    }
+
     function initContentTypeDropdown() {
         $contentTypeSelect.on('change', function() {
             window.F2E.Utils.updatePlaceholderBasedOnContentType();
@@ -157,100 +178,49 @@ window.F2E = window.F2E || {};
     }
 
     function initTabs() {
-        // Ensure initial state: Code is active, Preview is hidden
-        $('.f2e-tab-button[data-tab="code"]').addClass('active border-[var(--primary-color)] text-[var(--primary-color)]').removeClass('text-[var(--text-gray-500)]');
-        $('.f2e-tab-button[data-tab="preview"]').removeClass('active border-[var(--primary-color)] text-[var(--primary-color)]').addClass('text-[var(--text-gray-500)]');
-        $('#code-tab').addClass('active').removeClass('hidden');
-        $('#preview-tab').removeClass('active').addClass('hidden');
-
         $('.f2e-tabs-nav').on('click', '.f2e-tab-button', function() {
             const tabId = $(this).data('tab');
-            
-            // 1. Update button styling (active/inactive)
-            $('.f2e-tab-button').removeClass('active border-[var(--primary-color)] text-[var(--primary-color)]')
-                            .addClass('text-[var(--text-gray-500)]');
-            $(this).addClass('active border-[var(--primary-color)] text-[var(--primary-color)]')
-                .removeClass('text-[var(--text-gray-500)]');
-            
-            // 2. Update content visibility (active/hidden) - THIS IS THE LOGIC THAT HIDES/SHOWS THE TABS
+            $('.f2e-tab-button').removeClass('active border-[var(--primary-color)] text-[var(--primary-color)]').addClass('text-[var(--text-gray-500)]');
+            $(this).addClass('active border-[var(--primary-color)] text-[var(--primary-color)]').removeClass('text-[var(--text-gray-500)]');
             $('.f2e-tab-content').removeClass('active').addClass('hidden');
             $(`#${tabId}-tab`).addClass('active').removeClass('hidden');
-            
-            // 3. Trigger preview update if switching to preview tab
-            if (tabId === 'preview' && window.F2E.Preview && window.F2E.Preview.updateLivePreview) {
-                window.F2E.Preview.updateLivePreview();
-            }
+            if (tabId === 'preview' && window.F2E.Preview) { window.F2E.Preview.updateLivePreview(); }
         });
     }
-
-
 
     function initIterationOptions() {
         $iterationOptions.on('click', function() {
             $iterationOptions.removeClass('active');
             $(this).addClass('active');
-            const selectedValue = $(this).data('value');
-            $iterationsValue.text(selectedValue);
-            window.F2E.Utils.updateGenerateButtonPoints();
+            $iterationsValue.text($(this).data('value'));
             window.F2E.Utils.updateInputUI();
         });
     }
 
     function initActions() {
-        if (window.F2E.Generate && window.F2E.Generate.generateCode) {
-            $generateButton.on('click', async function(e) {
-                e.preventDefault();
-                await window.F2E.Generate.generateCode();
-            });
-        }
+        $generateButton.on('click', function(e) {
+            e.preventDefault();
+            if (window.F2E.Generate) window.F2E.Generate.generateCode();
+        });
 
         if (window.F2E.Actions) {
             $clearButton.on('click', window.F2E.Actions.clearContent);
-            $f2eClearConsoleButton.on('click', window.F2E.Actions.clearConsole);
             $copyButton.on('click', window.F2E.Actions.copyContent);
             $downloadButton.on('click', window.F2E.Actions.downloadContent);
         }
-        
-        if (window.F2E.Preview && window.F2E.Preview.updateLivePreview) {
-            $('#f2e-refresh-preview').on('click', window.F2E.Preview.updateLivePreview);
-        }
 
-        // NEW: Advanced Modal Actions
-        $advancedSettingsButton.on('click', function() {
-            $advancedModal.removeClass('hidden').addClass('flex');
-        });
-
-        $advancedModalCloseButtons.on('click', function() {
-            $advancedModal.removeClass('flex').addClass('hidden');
-        });
-
-        $advancedModal.on('click', function(e) {
-            if (e.target === this) {
-                $advancedModal.removeClass('flex').addClass('hidden');
-            }
-        });
-        
-        $(document).on('keydown', function(e) {
-            if (e.key === 'Escape' && $advancedModal.hasClass('flex')) {
-                $advancedModal.removeClass('flex').addClass('hidden');
-            }
-        });
-        // END NEW
-        
-        // NEW: Ensure Image Action Handlers are attached after everything is ready/loaded
-        if (window.F2E.ImageActions && window.F2E.ImageActions.attachImageActionHandlers) {
-             window.F2E.ImageActions.attachImageActionHandlers();
-        }
+        $advancedSettingsButton.on('click', () => $advancedModal.removeClass('hidden').addClass('flex'));
+        $advancedModalCloseButtons.on('click', () => $advancedModal.removeClass('flex').addClass('hidden'));
+        $advancedModal.on('click', (e) => { if (e.target === $advancedModal[0]) $advancedModal.removeClass('flex').addClass('hidden'); });
     }
     
-    // --- Document Ready ---
     $(document).ready(function() {
         initContentTypeDropdown();
         initTabs(); 
         initIterationOptions();
-        window.F2E.Utils.updateInputUI();
-        window.F2E.Utils.updateGenerateButtonPoints();
+        initInputModeToggle();
         initActions();
+        window.F2E.Utils.updateInputUI();
     });
 
 })(jQuery);

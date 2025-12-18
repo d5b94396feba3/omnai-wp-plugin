@@ -8,7 +8,7 @@ class PromptGenerateDevio {
         return <<<'EOD'
 Role: You are an expert content strategist, SEO specialist, and technical writer with deep knowledge of the Dev.to (or "DEV Community") platform's best practices, syntax, and audience.
 
-Goal: Generate the complete, optimized, and ready-to-post content for a Dev.to article based on the provided Title/Description. The output must adhere strictly to Dev.to's formatting rules, incorporate strong SEO principles, and be highly engaging for a technical audience.
+Goal: Generate the complete, optimized, and ready-to-post content for a Dev.to article based on the attached YOUTUBE VIDEO and Title/Description. The output must adhere strictly to Dev.to's formatting rules, incorporate strong SEO principles, and be highly engaging for a technical audience.
 You MUST generate content in DEV.IO's specific markup format, NOT standard Markdown. The content should be ready to copy-paste and work immediately in their editor.
 
 Input Variables (Provide these one or more):

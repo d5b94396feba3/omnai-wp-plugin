@@ -530,6 +530,39 @@ class ApiHandler {
         return base64_encode($image_content);
     }
 
+    public static function get_yt_devio_system_prompt_content($desc_tag_name = '') {
+        self::clean_output_buffers();
+    
+        $prompt_file = MPAI_PLUGIN_DIR . 'prompts/system/youtube/blog/class-agentic-prompt-generate-blog-devio.php';
+        
+        error_log('In get_yt_devio_system_prompt_content: ' . $prompt_file);
+        
+        if (!file_exists($prompt_file)) {
+            error_log('Dev.io prompt file not found: ' . $prompt_file);
+            return self::get_default_devio_prompt();
+        }
+    
+        ob_start();
+        $included = include $prompt_file;
+        $output = ob_get_clean();
+    
+        if (!empty($output)) {
+            error_log('Unexpected output in devio prompt file: ' . substr($output, 0, 200));
+        }
+    
+        if (!class_exists('MediumPostAI\PromptGenerateDevio')) {
+            error_log('PromptGenerateDevio class not found after inclusion');
+            return self::get_default_devio_prompt();
+        }
+    
+        try {
+            $prompt = PromptGenerateDevio::get_system_prompt();
+            return is_string($prompt) ? trim($prompt) : self::get_default_devio_prompt();
+        } catch (\Exception $e) {
+            error_log('Dev.io prompt generation error: ' . $e->getMessage());
+            return self::get_default_devio_prompt();
+        }
+    }
 
     public static function get_devio_system_prompt_content($desc_tag_name = '') {
         self::clean_output_buffers();
@@ -707,6 +740,40 @@ class ApiHandler {
         }
     }
 
+    public static function get_yt_instagram_system_prompt_content($desc_tag_name = '') {
+        self::clean_output_buffers();
+
+        $prompt_file = MPAI_PLUGIN_DIR . 'prompts/system/youtube/blog/class-agentic-prompt-generate-blog-instagram.php';
+        
+        error_log('In get_yt_instagram_system_prompt_content: ' . $prompt_file);
+        
+        if (!file_exists($prompt_file)) {
+            error_log('Prompt file not found: ' . $prompt_file);
+            return self::get_default_system_prompt();
+        }
+
+        ob_start();
+        $included = include $prompt_file;
+        $output = ob_get_clean();
+
+        if (!empty($output)) {
+            error_log('Unexpected output in prompt file: ' . substr($output, 0, 200));
+        }
+
+        if (!class_exists('MediumPostAI\PromptGenerateHTML')) {
+            error_log('PromptGenerateHTML class not found after inclusion');
+            return self::get_default_system_prompt();
+        }
+
+        try {
+            $prompt = PromptGenerateHTML::get_system_prompt();
+            return is_string($prompt) ? trim($prompt) : self::get_default_system_prompt();
+        } catch (\Exception $e) {
+            error_log('Prompt generation error: ' . $e->getMessage());
+            return self::get_default_system_prompt();
+        }
+    }
+
 
     public static function get_instagram_system_prompt_content($desc_tag_name = '') {
         self::clean_output_buffers();
@@ -778,6 +845,41 @@ class ApiHandler {
     }
 
 
+    public static function get_yt_medium_system_prompt_content($desc_tag_name = '') {
+        self::clean_output_buffers();
+
+        $prompt_file = MPAI_PLUGIN_DIR . 'prompts/system/youtube/blog/class-agentic-prompt-generate-blog-medium.php';
+        
+        error_log('In get_yt_medium_system_prompt_content: ' . $prompt_file);
+        
+        if (!file_exists($prompt_file)) {
+            error_log('Prompt file not found: ' . $prompt_file);
+            return self::get_default_system_prompt();
+        }
+
+        ob_start();
+        $included = include $prompt_file;
+        $output = ob_get_clean();
+
+        if (!empty($output)) {
+            error_log('Unexpected output in prompt file: ' . substr($output, 0, 200));
+        }
+
+        if (!class_exists('MediumPostAI\PromptGenerateHTML')) {
+            error_log('PromptGenerateHTML class not found after inclusion');
+            return self::get_default_system_prompt();
+        }
+
+        try {
+            $prompt = PromptGenerateHTML::get_system_prompt();
+            return is_string($prompt) ? trim($prompt) : self::get_default_system_prompt();
+        } catch (\Exception $e) {
+            error_log('Prompt generation error: ' . $e->getMessage());
+            return self::get_default_system_prompt();
+        }
+    }
+
+
     public static function get_medium_system_prompt_content($desc_tag_name = '') {
         self::clean_output_buffers();
 
@@ -813,6 +915,39 @@ class ApiHandler {
         }
     }
 
+    public static function get_yt_linkedin_system_prompt_content($desc_tag_name = '') {
+        self::clean_output_buffers();
+
+        $prompt_file = MPAI_PLUGIN_DIR . 'prompts/system/youtube/blog/class-agentic-prompt-generate-blog-linkedin.php';
+        
+        error_log('In get_yt_linkedin_system_prompt_content: ' . $prompt_file);
+        
+        if (!file_exists($prompt_file)) {
+            error_log('Prompt file not found: ' . $prompt_file);
+            return self::get_default_system_prompt();
+        }
+
+        ob_start();
+        $included = include $prompt_file;
+        $output = ob_get_clean();
+
+        if (!empty($output)) {
+            error_log('Unexpected output in prompt file: ' . substr($output, 0, 200));
+        }
+
+        if (!class_exists('MediumPostAI\PromptGenerateHTML')) {
+            error_log('PromptGenerateHTML class not found after inclusion');
+            return self::get_default_system_prompt();
+        }
+
+        try {
+            $prompt = PromptGenerateHTML::get_system_prompt();
+            return is_string($prompt) ? trim($prompt) : self::get_default_system_prompt();
+        } catch (\Exception $e) {
+            error_log('Prompt generation error: ' . $e->getMessage());
+            return self::get_default_system_prompt();
+        }
+    }
 
     public static function get_linkedin_system_prompt_content($desc_tag_name = '') {
         self::clean_output_buffers();
@@ -875,6 +1010,40 @@ class ApiHandler {
 
         try {
             $prompt = PromptGenerateIMG::get_system_prompt();
+            return is_string($prompt) ? trim($prompt) : self::get_default_system_prompt();
+        } catch (\Exception $e) {
+            error_log('Prompt generation error: ' . $e->getMessage());
+            return self::get_default_system_prompt();
+        }
+    }
+
+    public static function get_yt_x_twitter_system_prompt_content($desc_tag_name = '') {
+        self::clean_output_buffers();
+
+        $prompt_file = MPAI_PLUGIN_DIR . 'prompts/system/youtube/blog/class-agentic-prompt-generate-blog-x-twitter.php';
+        
+        error_log('In get_yt_x_twitter_system_prompt_content: ' . $prompt_file);
+        
+        if (!file_exists($prompt_file)) {
+            error_log('Prompt file not found: ' . $prompt_file);
+            return self::get_default_system_prompt();
+        }
+
+        ob_start();
+        $included = include $prompt_file;
+        $output = ob_get_clean();
+
+        if (!empty($output)) {
+            error_log('Unexpected output in prompt file: ' . substr($output, 0, 200));
+        }
+
+        if (!class_exists('MediumPostAI\PromptGenerateHTML')) {
+            error_log('PromptGenerateHTML class not found after inclusion');
+            return self::get_default_system_prompt();
+        }
+
+        try {
+            $prompt = PromptGenerateHTML::get_system_prompt();
             return is_string($prompt) ? trim($prompt) : self::get_default_system_prompt();
         } catch (\Exception $e) {
             error_log('Prompt generation error: ' . $e->getMessage());

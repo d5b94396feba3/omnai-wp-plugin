@@ -16,6 +16,7 @@ class GenerateHandler {
         $url = "";
         $output_type = "";
         $description = $request->get_param('description');
+        $description_yt = $request->get_param('description_yt');
         $current_code = $request->get_param('current_code');
         $update_description = $description;
         $iterations = (int)$request->get_param('iterations');
@@ -55,6 +56,7 @@ class GenerateHandler {
 
         error_log('iterations: ' . $iterations);
         error_log('description: ' . $description);
+        error_log('description_yt: ' . $description_yt);
         error_log('current_code: ' . $current_code);
         error_log('siteUR2L: ' . $siteURL);
         error_log('target_keyword: ' . $target_keyword);
@@ -64,47 +66,51 @@ class GenerateHandler {
         error_log('required_length: ' . $required_length); // NEW
         error_log('call_to_action: ' . $call_to_action); // NEW
 
+        if(!empty($description_yt)){
+            $description = $description_yt;
+        }
 
         $content_type = $request->get_param('content_type') ?: 'medium';
     
-        // Update system prompt based on content type
-        if(!empty($siteURL)){
-            error_log('inside siteUR2L: ' . $siteURL);
+        // Optimized: Use mapping to reduce branching and redundancy.
+        $system_prompt_map_with_url = [
+            'facebook'   => ['method' => 'get_yt_facebook_system_prompt_content', 'log' => true],
+            'website'    => ['method' => 'get_yt_website_system_prompt_content'],
+            'devio'      => ['method' => 'get_yt_devio_system_prompt_content'],
+            'medium'     => ['method' => 'get_yt_medium_system_prompt_content'],
+            'linkedin'   => ['method' => 'get_yt_linkedin_system_prompt_content'],
+            'x-twitter'  => ['method' => 'get_yt_x_twitter_system_prompt_content'],
+            'instagram'  => ['method' => 'get_yt_instagram_system_prompt_content', 'log' => true],
+        ];
 
-            if($content_type === 'facebook') {
-                error_log('URL facebook content_type: ' . $content_type);
-                $system_prompt = ApiHandler::get_yt_facebook_system_prompt_content();
+        $system_prompt_map = [
+            'devio'      => ['method' => 'get_devio_system_prompt_content'],
+            'medium'     => ['method' => 'get_medium_system_prompt_content'],
+            'linkedin'   => ['method' => 'get_linkedin_system_prompt_content'],
+            'x-twitter'  => ['method' => 'get_x_twitter_system_prompt_content'],
+            'website'    => ['method' => 'get_website_system_prompt_content'],
+            'facebook'   => ['method' => 'get_facebook_system_prompt_content', 'log' => true],
+            'instagram'  => ['method' => 'get_instagram_system_prompt_content', 'log' => true],
+        ];
+
+        if (!empty($siteURL) && isset($system_prompt_map_with_url[$content_type])) {
+            if (!empty($system_prompt_map_with_url[$content_type]['log'])) {
+                error_log('content_type: ' . $content_type);
+            }
+            $method = $system_prompt_map_with_url[$content_type]['method'];
+            $system_prompt = ApiHandler::$method();
+            if (!empty($system_prompt_map_with_url[$content_type]['log'])) {
                 error_log('system_prompt: ' . $system_prompt);
             }
-            // ... (rest of content type logic remains the same)
-            else if($content_type === 'website') {
-                $system_prompt = ApiHandler::get_yt_website_system_prompt_content();
+        } elseif (isset($system_prompt_map[$content_type])) {
+            if (!empty($system_prompt_map[$content_type]['log'])) {
+                error_log('content_type: ' . $content_type);
             }
-        }
-        else if ($content_type === 'devio') {
-            $system_prompt = ApiHandler::get_devio_system_prompt_content();
-        } 
-        else if($content_type === 'medium') {
-            $system_prompt = ApiHandler::get_medium_system_prompt_content();
-        }
-        else if($content_type === 'linkedin') {
-            $system_prompt = ApiHandler::get_linkedin_system_prompt_content();
-        }
-        else if($content_type === 'x-twitter') {
-            $system_prompt = ApiHandler::get_x_twitter_system_prompt_content();
-        }
-        else if($content_type === 'website') {
-            $system_prompt = ApiHandler::get_website_system_prompt_content();
-        }
-        else if($content_type === 'facebook') {
-            error_log('content_type: ' . $content_type);
-            $system_prompt = ApiHandler::get_facebook_system_prompt_content();
-            error_log('system_prompt: ' . $system_prompt);
-        }
-        else if($content_type === 'instagram') {
-            error_log('content_type: ' . $content_type);
-            $system_prompt = ApiHandler::get_instagram_system_prompt_content();
-            error_log('system_prompt: ' . $system_prompt);
+            $method = $system_prompt_map[$content_type]['method'];
+            $system_prompt = ApiHandler::$method();
+            if (!empty($system_prompt_map[$content_type]['log'])) {
+                error_log('system_prompt: ' . $system_prompt);
+            }
         }
 
         try {
