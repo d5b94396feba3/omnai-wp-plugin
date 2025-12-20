@@ -1,0 +1,1 @@
+# omnai-wp-plugin
