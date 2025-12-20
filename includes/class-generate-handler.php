@@ -66,6 +66,8 @@ class GenerateHandler {
         error_log('required_length: ' . $required_length); // NEW
         error_log('call_to_action: ' . $call_to_action); // NEW
 
+        // return;
+
         if(!empty($description_yt)){
             $description = $description_yt;
         }
