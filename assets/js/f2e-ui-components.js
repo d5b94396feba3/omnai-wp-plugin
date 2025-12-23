@@ -582,16 +582,6 @@ const Metadata = {
             <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-2">Featured Image</label>
             <div class="f2e-image-concept bg-slate-50 p-5 rounded-xl border border-slate-200 flex flex-col gap-5 shadow-sm">
               
-              <div class="f2e-concept-header flex items-start gap-3 bg-white p-3 rounded-lg border border-slate-100 shadow-sm">
-                <div class="p-2 bg-indigo-50 rounded-lg flex-shrink-0">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-indigo-600">
-                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
-                      <circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="2"/>
-                      <polyline points="21,15 16,10 5,21" stroke="currentColor" stroke-width="2"/>
-                    </svg>
-                </div>
-              </div>
-
               ${imageUrl ? `
               <div class="f2e-image-preview-wrapper flex flex-col gap-4">
                 <div class="relative group">

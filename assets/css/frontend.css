@@ -1188,3 +1188,8 @@ body {
     border: none !important;
     box-shadow: none !important;
 }
+#f2e-content-type {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+}

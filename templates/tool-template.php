@@ -111,40 +111,23 @@
                         <label class="f2e-setting-label block text-lg font-medium text-[var(--text-gray-700)] mb-2">Target Platform <span class="text-[var(--text-red-500)]">*</span></label>
 
                         <div class="f2e-content-type-selector relative">
-
                             <select id="f2e-content-type" class="w-full p-3 border border-[var(--border-gray-200)] rounded-lg focus:ring-2 focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)] bg-white text-[var(--text-gray-800)] appearance-none cursor-pointer transition-colors duration-200">
-
                                 <option value="medium">Medium Post</option>
-
                                 <option value="devio">Dev.io Post</option>
-
                                 <option value="linkedin">Linkedin Post</option>
-
                                 <option value="facebook">Facebook Post</option>
-
                                 <option value="instagram">Instagram Post</option>
-
                                 <option value="x-twitter">X (Formaly Known Twitter) Post</option>
-
                                 <option value="website">Website Blog Post</option>
-
                             </select>
-
-                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-
-                                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-
-                                </svg>
-
-                            </div>
-
+                            
+                          
                         </div>
-
                         <p class="f2e-setting-description text-[var(--text-gray-500)] text-sm mt-2">Choose Target Platform</p> 
 
                     </div>
+
+                    
 
                     <div class="f2e-setting-group">
                         <label class="f2e-setting-label block text-sm font-bold text-slate-700 mb-2">Quality Iterations <span class="text-rose-500">*</span></label>
@@ -261,37 +244,21 @@
                     <div class="f2e-tabs-container mb-4">
 
                         <div class="f2e-tabs-nav flex border-b border-[var(--border-gray-200)]">
-
-                            <button class="f2e-tab-button py-2 px-4 text-[var(--text-gray-500)] font-medium" data-tab="preview">
-
+                            <button class="f2e-tab-button active py-2 px-4 border-b-2 border-[var(--primary-color)] text-[var(--primary-color)] font-medium" data-tab="preview">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="inline mr-2">
-
                                     <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-
                                     <line x1="8" y1="21" x2="16" y2="21"></line>
-
                                     <line x1="12" y1="17" x2="12" y2="21"></line>
-
                                 </svg>
-
                                 PREVIEW
-
                             </button>
-
-                            <button class="f2e-tab-button active py-2 px-4 border-b-2 border-[var(--primary-color)] text-[var(--primary-color)] font-medium" data-tab="code">
-
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="inline mr-2">
-
-                                <polyline points="16 18 22 12 16 6"></polyline>
-
-                                <polyline points="8 6 2 12 8 18"></polyline>
-
-                            </svg>
-
-                            DETAILS
-
+                            <button class="f2e-tab-button py-2 px-4 text-[var(--text-gray-500)] font-medium" data-tab="code">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="inline mr-2">
+                                    <polyline points="16 18 22 12 16 6"></polyline>
+                                    <polyline points="8 6 2 12 8 18"></polyline>
+                                </svg>
+                                DETAILS
                             </button>
-
                         </div>
 
                     </div>
@@ -321,22 +288,6 @@
                     <div class="f2e-tab-content hidden" id="preview-tab">
 
                         <div class="f2e-preview-container border border-[var(--border-gray-200)] rounded-lg bg-white overflow-hidden h-96 flex flex-col">
-
-                            <div class="f2e-preview-toolbar bg-[var(--bg-gray-50)] px-4 py-2 border-b border-[var(--border-gray-200)] flex items-center justify-between">
-
-                                <span class="text-sm font-medium text-[var(--text-gray-700)]">Live Preview</span>
-
-                                <div class="f2e-preview-actions flex gap-2">
-
-                                    <button id="f2e-refresh-preview" class="text-xs px-2 py-1 bg-white border border-[var(--border-gray-300)] rounded text-[var(--text-gray-600)] hover:bg-[var(--bg-gray-100)] transition-colors">
-
-                                        Refresh
-
-                                    </button>
-
-                                </div>
-
-                            </div>
 
                             <div class="f2e-preview-content flex-1 bg-white">
 

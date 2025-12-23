@@ -254,6 +254,7 @@ window.F2E = window.F2E || {};
         initInputModeToggle();
         initActions();
         window.F2E.Utils.updateInputUI();
+        $('.f2e-tab-button[data-tab="preview"]').trigger('click');
     });
 
 })(jQuery);
