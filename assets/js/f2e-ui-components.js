@@ -246,6 +246,8 @@ const Preview = {
 
     const metadata = F2E.State.lastGeneratedMetadata;
 
+    const tagsArray = Array.isArray(metadata.tags) ? metadata.tags : []; // Get tags
+
     const featuredImage = metadata.image || '';
 
     const getContentTypeDisplayName = F2E.Utils.getContentTypeDisplayName;
@@ -285,6 +287,14 @@ const Preview = {
       }
 
       previewHtml += contentToDisplay;
+
+    if (tagsArray.length > 0) {
+      const tagHtml = `
+        <div class="f2e-copied-tags" style="margin-top: 20px; padding-top: 10px; border-top: 1px solid #eee;">
+        ${tagsArray.join(', ')}
+        </div>`;
+      previewHtml += tagHtml;
+    }
 
       const fullHtml = `
 
@@ -517,273 +527,152 @@ const Preview = {
 // --- Metadata Functions (MODIFIED SECTION) ---
 
 const Metadata = {
-
   createMetadataPanel: function(metadata) {
-
     $('.f2e-metadata-panel').remove();
-
     const tagsArray = Array.isArray(metadata.tags) ? metadata.tags : [];
-
     const featuredImage = metadata.image || '';
-
     const imageUrl = F2E.Utils.getFeaturedImageUrl(featuredImage);
-
     const imageTitleSlug = (metadata.title || 'featured-image').replace(/[^a-z0-9]/gi, '_').toLowerCase();
-
     
-
     // NEW: Check if the 'image' field is a URL or a concept.
-
     const isImageGenerated = featuredImage.startsWith('http') || featuredImage.startsWith('/');
 
-
-
     const metadataPanel = `
-
-      <div class="f2e-metadata-panel mt-6 border border-[var(--border-gray-200)] rounded-lg bg-[var(--bg-gray-50)] overflow-hidden transition-all duration-300">
-
-        <div class="f2e-metadata-header bg-white px-4 py-3 border-b border-[var(--border-gray-200)] flex items-center justify-between cursor-pointer hover:bg-[var(--bg-gray-50)] transition-colors">
-
+      <div class="f2e-metadata-panel mt-0 border border-slate-200 rounded-xl bg-white overflow-hidden shadow-sm transition-all duration-300">
+        
+        <div class="f2e-metadata-header bg-white px-5 py-4 border-b border-slate-100 flex items-center justify-between cursor-pointer hover:bg-slate-50 transition-colors">
           <div class="flex items-center gap-3">
-
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" class="text-[var(--blue-600)]">
-
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2"/>
-
-              <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2"/>
-
-              <line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2"/>
-
-              <line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2"/>
-
-              <polyline points="10,9 9,9 8,9" stroke="currentColor" stroke-width="2"/>
-
-            </svg>
-
-            <h4 class="font-semibold text-[var(--text-gray-800)]">Content Details</h4>
-
+            <div class="p-2 bg-indigo-50 rounded-lg">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-indigo-600">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2"/>
+                  <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2"/>
+                </svg>
+            </div>
+            <h4 class="font-bold text-slate-800 text-lg mt-5">Content Details</h4>
           </div>
-
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" class="f2e-metadata-chevron text-[var(--text-gray-500)] transition-transform duration-200 rotate-180">
-
-            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="f2e-metadata-chevron text-slate-400 transition-transform duration-200 rotate-180">
+            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-
         </div>
 
-        <div class="f2e-metadata-content px-4 py-4 space-y-4 bg-white" style="display: block;">
-
+        <div class="f2e-metadata-content px-6 py-6 space-y-6 bg-white" style="display: block;">
+          
           ${metadata.title ? `
-
           <div class="f2e-metadata-item">
-
-            <label class="f2e-metadata-label block text-sm font-medium text-[var(--text-gray-600)] mb-1">Title</label>
-
-            <div class="f2e-metadata-value text-[var(--text-gray-800)] font-medium">${metadata.title}</div>
-
+            <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">Generated Title</label>
+            <div class="f2e-metadata-value text-slate-800 font-semibold text-base leading-snug">${metadata.title}</div>
           </div>
-
           ` : ''}
 
           ${tagsArray.length > 0 ? `
-
           <div class="f2e-metadata-item">
-
-            <label class="f2e-metadata-label block text-sm font-medium text-[var(--text-gray-600)] mb-2">Tags</label>
-
+            <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-2">SEO Tags</label>
             <div class="f2e-tags-container flex flex-wrap gap-2">
-
-              ${tagsArray.map(tag => `
-
-                <span class="f2e-tag px-3 py-1 bg-[var(--blue-100)] text-[var(--blue-800)] rounded-full text-xs font-medium border border-[var(--blue-200)]">
-
+              ${tagsArray.map(tag => `  
+                <span class="f2e-tag px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-bold border border-slate-200">
                   ${tag}
-
                 </span>
-
               `).join('')}
-
             </div>
-
           </div>
-
           ` : ''}
 
           ${metadata.image ? `
-
           <div class="f2e-metadata-item">
-
-            <label class="f2e-metadata-label block text-sm font-medium text-[var(--text-gray-600)] mb-2">Featured Image Concept</label>
-
-            <div class="f2e-image-concept bg-[var(--bg-gray-100)] p-4 rounded-lg border border-[var(--border-gray-200)] flex flex-col gap-4">
-
-              <div class="flex items-start gap-3">
-
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" class="text-[var(--blue-600)] mt-0.5 flex-shrink-0">
-
-                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
-
-                  <circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="2"/>
-
-                  <polyline points="21,15 16,10 5,21" stroke="currentColor" stroke-width="2"/>
-
-                </svg>
-
-                <p class="text-[var(--text-gray-700)] text-sm leading-relaxed">${metadata.image}</p>
-
+            <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-2">Featured Image</label>
+            <div class="f2e-image-concept bg-slate-50 p-5 rounded-xl border border-slate-200 flex flex-col gap-5 shadow-sm">
+              
+              <div class="f2e-concept-header flex items-start gap-3 bg-white p-3 rounded-lg border border-slate-100 shadow-sm">
+                <div class="p-2 bg-indigo-50 rounded-lg flex-shrink-0">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-indigo-600">
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                      <circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="2"/>
+                      <polyline points="21,15 16,10 5,21" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </div>
               </div>
 
               ${imageUrl ? `
-
-              <div class="f2e-image-preview-wrapper flex flex-col gap-3">
-
-                <img src="${imageUrl}" alt="${metadata.title || 'Featured Image Concept'}" class="w-full h-auto max-h-48 object-cover rounded-md border border-[var(--border-gray-300)]"/>
-
+              <div class="f2e-image-preview-wrapper flex flex-col gap-4">
+                <div class="relative group">
+                    <img src="${imageUrl}" alt="${metadata.title || 'Preview'}" class="w-full h-auto max-h-64 object-cover rounded-xl border border-slate-200 shadow-md transition-transform duration-300 group-hover:scale-[1.01]"/>
+                    <div class="absolute top-3 left-3 bg-black/60 backdrop-blur-md text-white text-[10px] px-2 py-1 rounded-md uppercase font-bold tracking-tight">Preview</div>
+                </div>
                 
-
-                <div class="f2e-image-actions-new flex flex-wrap gap-2">
-
+                <div class="f2e-image-actions-new flex flex-wrap items-center gap-2">
                   ${isImageGenerated ? `
-
-                    <button class="f2e-refine-image-button f2e-button f2e-button-primary py-2 px-4 rounded-lg text-sm font-medium flex items-center justify-center gap-2 shadow-sm hover:shadow-md transition-all duration-200">
-
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-
+                    <button class="f2e-refine-image-button f2e-button bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-lg shadow-indigo-100 transition-all active:scale-95">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-
                       </svg>
-
                       Refine
-
                     </button>
-
-                    <button class="f2e-regenerate-image-button f2e-button f2e-button-secondary py-2 px-4 rounded-lg border border-[var(--gray-300)] text-[var(--text-gray-700)] hover:bg-[var(--bg-gray-100)] flex items-center justify-center gap-2 shadow-sm transition-colors duration-200 text-sm">
-
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-
+                    <button class="f2e-regenerate-image-button f2e-button bg-white hover:bg-slate-50 text-slate-700 py-2.5 px-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-center gap-2 transition-all text-xs font-bold active:scale-95">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
-
                       </svg>
-
                       Regenerate
-
                     </button>
-
                   ` : ''}
-
-                  <button class="f2e-open-image-modal f2e-button f2e-button-secondary py-2 px-4 rounded-lg border border-[var(--gray-300)] text-[var(--text-gray-700)] hover:bg-[var(--bg-gray-100)] focus:outline-none focus:ring-2 focus:ring-[var(--gray-300)] flex items-center justify-center gap-2 shadow-sm transition-colors duration-200 text-sm" data-image-url="${imageUrl}" data-image-title-slug="${imageTitleSlug}" aria-label="View and Download Image">
-
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-
+                  
+                  <button class="f2e-open-image-modal f2e-button bg-white hover:bg-slate-50 text-slate-600 py-2.5 px-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-center gap-2 transition-all text-xs font-bold active:scale-95" data-image-url="${imageUrl}" data-image-title-slug="${imageTitleSlug}">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
-
                     </svg>
-
-                    View Image
-
+                    View Full
                   </button>
 
                   <a href="${imageUrl}" download="${imageTitleSlug}-concept.jpg"
-
-                  class="f2e-button f2e-button-secondary py-2 px-4 rounded-lg border border-[var(--gray-300)] text-[var(--text-gray-700)] hover:bg-[var(--bg-gray-100)] focus:outline-none focus:ring-2 focus:ring-[var(--gray-300)] flex items-center justify-center gap-2 shadow-sm transition-colors duration-200 text-sm" aria-label="Download Image Directly">
-
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-
+                  class="f2e-button bg-slate-800 hover:bg-slate-900 text-white py-2.5 px-4 rounded-xl shadow-sm flex items-center justify-center gap-2 transition-all text-xs font-bold active:scale-95">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
-
                     </svg>
-
                     Download
-
                   </a>
-
                 </div>
-
               </div>
-
               ` : ''}
-
             </div>
-
           </div>
-
           ` : ''}
 
-          <div class="f2e-metadata-actions pt-2 border-t border-[var(--border-gray-200)]">
-
-            <button class="f2e-copy-metadata f2e-button f2e-button-secondary py-2 px-4 rounded-lg border border-[var(--gray-300)] text-[var(--text-gray-700)] hover:bg-[var(--bg-gray-100)] focus:outline-none focus:ring-2 focus:ring-[var(--gray-300)] flex items-center gap-2 transition-colors duration-200 text-sm">
-
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)">
-
-                <path d="M8 16H6C4.89543 16 4 15.1046 4 14V6C4 4.89543 4.89543 4 6 4H14C15.1046 4 16 4.89543 16 6V8M10 20H18C19.1046 20 20 19.1046 20 18V10C20 8.89543 19.1046 8 18 8H10C8.89543 8 8 8.89543 8 10V18C8 19.1046 8.89543 20 10 20Z" stroke="currentColor" stroke-width="2"/>
-
+          <div class="f2e-metadata-actions pt-4 border-t border-slate-100">
+            <button class="f2e-copy-metadata w-full f2e-button bg-slate-100 hover:bg-slate-200 text-slate-700 py-3 px-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all active:scale-[0.98] text-sm">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M8 16H6C4.89543 16 4 15.1046 4 14V6C4 4.89543 4.89543 4 6 4H14C15.1046 4 16 4.89543 16 6V8M10 20H18C19.1046 20 20 19.1046 20 18V10C20 8.89543 19.1046 8 18 8H10C8.89543 8 8 8.89543 8 10V18C8 19.1046 8.89543 20 10 20Z" />
               </svg>
-
-              Copy All Details
-
+              Copy All Metadata
             </button>
-
           </div>
-
         </div>
-
       </div>
-
     `;
 
     $('.f2e-code-container').after(metadataPanel);
-
+    
+    // Existing event listeners (Headers slide, Copy logic, etc.)
     $('.f2e-metadata-header').on('click', function() {
-
       const $content = $(this).next('.f2e-metadata-content');
-
       const $chevron = $(this).find('.f2e-metadata-chevron');
-
       $content.slideToggle(200);
-
       $chevron.toggleClass('rotate-180');
-
     });
 
     $('.f2e-copy-metadata').on('click', function() {
-
       const metadataText = `
-
-        Title: ${metadata.title || 'Not specified'}
-
-        Tags: ${tagsArray.length > 0 ? tagsArray.join(', ') : 'No tags'}
-
-        Image Concept: ${metadata.image || 'Not specified'}
-
+Title: ${metadata.title || 'Not specified'}
+Tags: ${tagsArray.length > 0 ? tagsArray.join(', ') : 'No tags'}
+Image Concept: ${metadata.image || 'Not specified'}
       `.trim();
-
       navigator.clipboard.writeText(metadataText)
-
         .then(() => Actions.showCopiedMessage($(this)))
-
-        .catch(err => {
-
-          console.log('Failed to copy metadata:', err);
-
-          alert('Failed to copy metadata to clipboard');
-
-        });
-
+        .catch(err => alert('Failed to copy metadata'));
     });
-
     
-
-    // NEW: Re-attach image action handlers after metadata panel is rebuilt
-
     if (window.F2E.ImageActions && window.F2E.ImageActions.attachImageActionHandlers) {
-
         window.F2E.ImageActions.attachImageActionHandlers();
-
     }
-
   }
-
 };
 
 // --- Modal Functions (Original, Unchanged) ---
@@ -966,45 +855,50 @@ const Actions = {
 
   clearConsole: function() {},
 
+
   copyContent: function() {
-
     const now = Date.now();
-
     if (F2E.State.isCopying || (now - F2E.State.lastCopyTimestamp < COPY_THROTTLE_DELAY)) { return; }
-
     F2E.State.isCopying = true;
-
     F2E.State.lastCopyTimestamp = now;
 
-    const generatedContent = $resultCode.text().trim();
-
+    let generatedContent = $resultCode.text().trim();
     const contentType = F2E.Utils.getContentType();
-
+    
     if (!generatedContent || generatedContent === 'No content generated yet.') {
-
       alert(`No content available to copy. Please generate a ${F2E.Utils.getContentTypeDisplayName()} first.`);
-
       F2E.State.isCopying = false;
-
       return;
+    }
 
+    // --- MODIFICATION START: Append Tags ---
+    const metadata = F2E.State.lastGeneratedMetadata || {};
+    const tagsArray = Array.isArray(metadata.tags) ? metadata.tags : [];
+    
+    if (tagsArray.length > 0) {
+      if (contentType === 'devio') {
+        // Append as Markdown tags
+        const tagString = '\n\nTags: ' + tagsArray.map(t => `#${t.replace(/\s+/g, '')}`).join(' ');
+        generatedContent += tagString;
+      } else {
+        // Append as HTML tags
+        const tagHtml = `
+          <div class="f2e-copied-tags" style="margin-top: 20px; padding-top: 10px; border-top: 1px solid #eee;">
+           ${tagsArray.join(', ')}
+          </div>`;
+        generatedContent += tagHtml;
+      }
     }
 
     if (contentType === 'devio') {
-
       Actions.copyRawContent(generatedContent);
-
       F2E.State.isCopying = false;
-
     } else {
-
       Actions.copyHTMLContent(generatedContent);
-
       F2E.State.isCopying = false;
-
     }
-
   },
+
 
   copyRawContent: function(content) {
 

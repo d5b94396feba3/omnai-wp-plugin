@@ -1,0 +1,497 @@
+/* Content Studio Professional UI 
+   Note: All original variables and class names are preserved to ensure backend compatibility.
+*/
+
+:root {
+    /* Core Professional Palette */
+    --primary-color: #4f46e5; /* Indigo-600 */
+    --primary-700: #4338ca; 
+    --accent-600: #6366f1;
+    --bg-white: #ffffff;
+
+    /* Refined Gray Scale */
+    --bg-gray-50: #f8fafc;
+    --bg-gray-100: #f1f5f9;
+    --bg-gray-200: #e2e8f0;
+    --text-gray-800: #0f172a; /* Deep Navy */
+    --text-gray-700: #334155;
+    --text-gray-600: #475569;
+    --text-gray-500: #64748b;
+    --border-gray-100: #f1f5f9;
+    --border-gray-200: #e2e8f0;
+    --border-gray-300: #cbd5e1;
+
+    /* Functional Colors */
+    --blue-500: #3b82f6;
+    --blue-600: #2563eb;
+    --blue-200: #bfdbfe;
+    --blue-50-light: #eff6ff;
+    --blue-600-text: #2563eb;
+    --blue-800-dark: #1e40af;
+    --red-500: #ef4444;
+    --red-600: #dc2626;
+
+    --white-opacity-20: rgba(255, 255, 255, 0.15);
+}
+
+/* Base Wrapper */
+.f2e-tool-wrapper {
+    max-width: 100%;
+    margin: 0 auto;
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    color: var(--text-gray-800);
+    background: transparent;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Typography Enhancements */
+.f2e-section-title {
+    font-size: 1.875rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: var(--text-gray-800);
+}
+
+/* Modern Card Layout */
+.f2e-card {
+    background: #ffffff;
+    border: 1px solid var(--border-gray-200);
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 10px 40px -10px rgba(0,0,0,0.04);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.f2e-card:hover {
+    box-shadow: 0 20px 50px -12px rgba(0,0,0,0.08);
+}
+
+/* Toggle Switch Styling */
+.f2e-toggle-switch {
+    background: var(--bg-gray-100);
+    padding: 6px;
+    border-radius: 12px;
+    border: 1px solid var(--border-gray-200);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.f2e-switch-label {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--text-gray-600);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    padding: 0 10px;
+}
+
+.f2e-switch {
+    position: relative;
+    display: inline-block;
+    width: 3.2rem;
+    height: 1.8rem;
+}
+
+.f2e-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #cbd5e1;
+    border-radius: 2rem;
+    transition: .3s ease;
+}
+
+.f2e-slider::before {
+    position: absolute;
+    content: "";
+    height: 1.4rem;
+    width: 1.4rem;
+    left: 0.2rem;
+    bottom: 0.2rem;
+    background-color: white;
+    border-radius: 50%;
+    transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#f2e-input-mode-toggle:checked + .f2e-slider {
+    background-color: var(--primary-color);
+}
+
+#f2e-input-mode-toggle:checked + .f2e-slider::before {
+    transform: translateX(1.4rem);
+}
+
+/* Inputs & Form Groups */
+.f2e-form-group {
+    margin-bottom: 24px;
+}
+
+.f2e-textarea-wrapper textarea, 
+.tab-panel input {
+    width: 100%;
+    background: var(--bg-gray-50);
+    border: 1px solid var(--border-gray-200);
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 0.95rem;
+    color: var(--text-gray-800);
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.f2e-textarea-wrapper textarea:focus, 
+.tab-panel input:focus {
+    outline: none;
+    background: white;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+}
+
+/* Platform Select Styling */
+#f2e-content-type {
+    appearance: none;
+    background-color: white;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border-gray-200);
+    font-weight: 500;
+    cursor: pointer;
+}
+
+/* Iteration Radio Group */
+.f2e-iteration-selector {
+    background: var(--bg-gray-100);
+    padding: 4px;
+    border-radius: 14px;
+    border: 1px solid var(--border-gray-200);
+    display: flex;
+}
+
+.f2e-iteration-option {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: 700;
+    color: var(--text-gray-500);
+    border: none !important;
+    background: transparent;
+    transition: all 0.2s ease;
+}
+
+.f2e-iteration-option.active {
+    background: white !important;
+    color: var(--primary-color) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
+}
+
+/* Buttons */
+.f2e-button-primary {
+    background: var(--primary-color);
+    color: white;
+    font-weight: 700;
+    border-radius: 14px;
+    padding: 18px 24px;
+    border: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+}
+
+.f2e-button-primary:hover {
+    background: var(--primary-700);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px -6px rgba(79, 70, 229, 0.4);
+}
+
+.f2e-button-secondary {
+    background: white;
+    border: 1px solid var(--border-gray-200);
+    color: var(--text-gray-600);
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 10px 18px;
+    transition: all 0.2s ease;
+}
+
+.f2e-button-secondary:hover {
+    background: var(--bg-gray-50);
+    border-color: var(--border-gray-300);
+    color: var(--text-gray-800);
+}
+
+/* Result Section & Tabs */
+.f2e-tabs-nav {
+    border-bottom: 2px solid var(--bg-gray-100);
+    margin-bottom: 20px;
+}
+
+.f2e-tab-button {
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 12px 24px;
+    color: var(--text-gray-500);
+    border-bottom: 2px solid transparent !important;
+    background: none;
+    transition: all 0.2s ease;
+}
+
+.f2e-tab-button.active {
+    color: var(--primary-color) !important;
+    border-bottom-color: var(--primary-color) !important;
+}
+
+/* Code Output Styling */
+.f2e-code-container {
+    background: #0f172a; /* Deep Night */
+    border: 1px solid #1e293b;
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+    overflow: auto;
+}
+
+#f2e-result {
+    color: #e2e8f0;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.9rem;
+    line-height: 1.7;
+}
+
+/* Loading State (Glassmorphism Overlay) */
+.f2e-loading-container {
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    position: absolute;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.f2e-loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid var(--bg-gray-100);
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    animation: f2e-spin 1s linear infinite;
+}
+
+/* Modal Styling */
+.f2e-modal {
+    backdrop-filter: blur(8px);
+    background: rgba(15, 23, 42, 0.6) !important;
+}
+
+.f2e-modal-content {
+    border-radius: 24px;
+    border: none;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+}
+
+.f2e-modal-header {
+    background: var(--bg-gray-50);
+    border-bottom: 1px solid var(--border-gray-200);
+    padding: 24px;
+}
+
+.f2e-modal-body {
+    padding: 32px;
+}
+
+/* Badge Styling */
+.f2e-points-badge {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 11px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+
+/* Disclaimer / Important Note */
+.f2e-disclaimer {
+    background: var(--blue-50-light);
+    border: 1px solid var(--blue-200);
+    border-radius: 16px;
+    color: var(--blue-800-dark);
+    padding: 20px;
+    margin-top: 32px;
+    line-height: 1.6;
+}
+
+/* Visibility & Utilities */
+.f2e-hidden { display: none !important; }
+
+@keyframes f2e-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive Grid */
+@media (max-width: 1024px) {
+    .f2e-grid-container { grid-template-columns: 1fr; }
+    .f2e-card { padding: 24px; }
+}
+
+/* --- Code Tab & Result Container --- */
+.f2e-tab-content {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.f2e-code-container {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border: 1px solid #334155;
+    border-radius: 16px;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+    max-height: 800px;
+}
+
+#f2e-result {
+    color: #94a3b8; /* Base color for HTML tags */
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.9rem;
+    line-height: 1.8;
+}
+
+/* Syntax Highlighting Sim (Applying color to text within the code block) */
+#f2e-result b, #f2e-result strong { color: #818cf8; font-weight: 600; }
+#f2e-result h1, #f2e-result h2 { color: #f8fafc; font-weight: 700; display: block; margin-top: 10px; }
+
+/* --- Metadata Panel --- */
+.f2e-metadata-panel {
+    background: #ffffff;
+    border: 1px solid var(--border-gray-200);
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    margin-top: 24px;
+}
+
+.f2e-metadata-header {
+    background: var(--bg-gray-50);
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-gray-200);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.f2e-metadata-header h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.f2e-metadata-content {
+    padding: 24px;
+    transition: all 0.3s ease;
+}
+
+/* Metadata Items */
+.f2e-metadata-item {
+    margin-bottom: 20px;
+}
+
+.f2e-metadata-label {
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    color: var(--text-gray-500);
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.f2e-metadata-value {
+    color: var(--text-gray-800);
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* Tags Styling */
+.f2e-tag {
+    background: #eef2ff;
+    color: #4338ca;
+    border: 1px solid #c7d2fe;
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    cursor: default;
+}
+
+.f2e-tag:hover {
+    background: #4338ca;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+/* Image Concept Section */
+.f2e-image-concept {
+    background: var(--bg-gray-50);
+    border: 1px solid var(--border-gray-200);
+    padding: 16px;
+    border-radius: 12px;
+}
+
+.f2e-image-preview-wrapper img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid var(--border-gray-300);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.f2e-image-preview-wrapper img:hover {
+    transform: scale(1.01);
+}
+
+/* Action Buttons within Metadata */
+.f2e-image-actions-new {
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+}
+
+.f2e-image-actions-new .f2e-button {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+    border-radius: 8px;
+}
+
+.f2e-copy-metadata {
+    width: auto;
+    background: white;
+    color: var(--text-gray-700);
+    font-weight: 600;
+    border: 1px solid var(--border-gray-300);
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Fix for chevron rotation when panel is active (handled by JS toggling a class) */
+.f2e-metadata-panel.active .f2e-metadata-chevron {
+    transform: rotate(180deg);
+}
+
+/* Image of a Serverless Architecture Diagram */

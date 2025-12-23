@@ -16,8 +16,6 @@
 
                 <div class="f2e-form-group space-y-6 flex-1 flex flex-col">
 
-                    
-
                     <div class="f2e-toggle-switch flex items-center justify-between p-0 m-0">
 
                         <label for="f2e-input-mode-toggle" class="f2e-switch-label text-base font-semibold text-[var(--text-gray-800)]">Text</label>
@@ -144,13 +142,17 @@
 
                         </div>
 
-                        <p class="f2e-setting-description text-[var(--text-gray-500)] text-sm mt-2">Choose Target Platform</p>
-
-                        
+                        <p class="f2e-setting-description text-[var(--text-gray-500)] text-sm mt-2">Choose Target Platform</p> 
 
                     </div>
 
-
+                    <div class="f2e-setting-group">
+                        <label class="f2e-setting-label block text-sm font-bold text-slate-700 mb-2">Quality Iterations <span class="text-rose-500">*</span></label>
+                        <div class="f2e-iteration-selector flex p-1 bg-slate-100 rounded-xl border border-slate-200" role="radiogroup">
+                            <button type="button" class="f2e-iteration-option flex-1 py-2 text-xs font-bold rounded-lg transition-all" data-value="1">Draft (1)</button>
+                            <button type="button" class="f2e-iteration-option active flex-1 py-2 text-xs font-bold rounded-lg transition-all bg-white shadow-sm text-indigo-600" data-value="2">Polished (2)</button>
+                        </div>
+                    </div>
 
                     <div class="f2e-setting-group mt-6">
 
@@ -260,20 +262,6 @@
 
                         <div class="f2e-tabs-nav flex border-b border-[var(--border-gray-200)]">
 
-                            <button class="f2e-tab-button active py-2 px-4 border-b-2 border-[var(--primary-color)] text-[var(--primary-color)] font-medium" data-tab="code">
-
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="inline mr-2">
-
-                                    <polyline points="16 18 22 12 16 6"></polyline>
-
-                                    <polyline points="8 6 2 12 8 18"></polyline>
-
-                                </svg>
-
-                                Content
-
-                            </button>
-
                             <button class="f2e-tab-button py-2 px-4 text-[var(--text-gray-500)] font-medium" data-tab="preview">
 
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="inline mr-2">
@@ -286,7 +274,21 @@
 
                                 </svg>
 
-                                Preview
+                                PREVIEW
+
+                            </button>
+
+                            <button class="f2e-tab-button active py-2 px-4 border-b-2 border-[var(--primary-color)] text-[var(--primary-color)] font-medium" data-tab="code">
+
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="inline mr-2">
+
+                                <polyline points="16 18 22 12 16 6"></polyline>
+
+                                <polyline points="8 6 2 12 8 18"></polyline>
+
+                            </svg>
+
+                            DETAILS
 
                             </button>
 

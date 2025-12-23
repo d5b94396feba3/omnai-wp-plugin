@@ -1,4 +1,3 @@
-
 /**
  * f2e-core.js
  * Initializes variables, creates the global F2E namespace, and runs the main setup functions.
@@ -44,7 +43,6 @@ window.F2E = window.F2E || {};
     // Advanced Modal Elements
     const $advancedSettingsButton = $('#f2e-advanced-settings-button');
     const $advancedModal = $('#f2e-advanced-modal');
-    const $advancedModalCloseButtons = $advancedModal.find('.f2e-close-modal');
     const $targetKeyword = $('#f2e-target-keyword');
     const $audienceLevel = $('#f2e-audience-level');
     const $desiredTone = $('#f2e-desired-tone');
@@ -70,7 +68,7 @@ window.F2E = window.F2E || {};
         $iterationsValue, $f2eClearConsoleButton, $contentTypeSelect, $siteURL,
         $inputModeToggle, $textInputContainer, $youtubeInputContainer,
         $advancedSettingsButton, $advancedModal, $targetKeyword, $audienceLevel, $desiredTone,
-        $language, $requiredLength, $callToAction
+        $language, $requiredLength, $callToAction, $ytDescriptionToggleBtn, $ytDescriptionContainer
     };
     window.F2E.Constants = { basePointsPerIteration, i18n };
     window.F2E.State = { pollProgress, lastProgress, loaderInterval, currentProgress, targetProgress, lastGeneratedMetadata };
@@ -120,7 +118,8 @@ window.F2E = window.F2E || {};
             $generateButton.prop('disabled', false).removeClass('disabled');
             const currentIterations = window.F2E.Utils.getIterations();
             const totalPoints = basePointsPerIteration * currentIterations;
-            const buttonText = ($resultCode.text().trim() && $resultCode.text().trim() !== 'No content generated yet.') ? 'Refine' : 'Generate';
+            const isRefining = ($resultCode.text().trim() && $resultCode.text().trim() !== 'No content generated yet.');
+            const buttonText = isRefining ? 'Refine' : 'Generate';
             
             $generateButton.html(`
                 <span class="f2e-button-content">${buttonText} <span class="f2e-points-badge">${totalPoints} Points</span></span>
@@ -140,18 +139,17 @@ window.F2E = window.F2E || {};
     // --- Initialization Functions ---
     
     function initInputModeToggle() {
-        // Mode Switch Logic
         function toggleInputFields() {
             const isYoutube = $inputModeToggle.prop('checked');
             if (isYoutube) {
                 $textInputContainer.addClass('f2e-hidden');
                 $youtubeInputContainer.removeClass('f2e-hidden');
                 $description.prop('disabled', true);
-                $siteURL.prop('disabled', false).focus();
+                $siteURL.prop('disabled', false);
             } else {
                 $textInputContainer.removeClass('f2e-hidden');
                 $youtubeInputContainer.addClass('f2e-hidden');
-                $description.prop('disabled', false).focus();
+                $description.prop('disabled', false);
                 $siteURL.prop('disabled', true);
             }
             window.F2E.Utils.updateInputUI();
@@ -159,14 +157,17 @@ window.F2E = window.F2E || {};
 
         $inputModeToggle.on('change', toggleInputFields);
 
-        // Youtube Additional Instructions Slider Logic
-        $ytDescriptionContainer.hide(); // Hide instructions by default
-        $ytDescriptionToggleBtn.on('click', function() {
-            $ytDescriptionContainer.slideToggle(300);
+        // Specific Instructions Toggle (Fixed)
+        $ytDescriptionToggleBtn.on('click', function(e) {
+            e.preventDefault();
+            $ytDescriptionContainer.toggleClass('f2e-hidden');
+            const isExpanded = !$ytDescriptionContainer.hasClass('f2e-hidden');
+            $(this).attr('aria-expanded', isExpanded);
+            
+            // Toggle icon rotation or style if needed
             $(this).toggleClass('active');
         });
 
-        // Initialize state
         toggleInputFields();
     }
 
@@ -181,11 +182,25 @@ window.F2E = window.F2E || {};
     function initTabs() {
         $('.f2e-tabs-nav').on('click', '.f2e-tab-button', function() {
             const tabId = $(this).data('tab');
+            
+            // Tab UI toggle
             $('.f2e-tab-button').removeClass('active border-[var(--primary-color)] text-[var(--primary-color)]').addClass('text-[var(--text-gray-500)]');
             $(this).addClass('active border-[var(--primary-color)] text-[var(--primary-color)]').removeClass('text-[var(--text-gray-500)]');
+            
             $('.f2e-tab-content').removeClass('active').addClass('hidden');
             $(`#${tabId}-tab`).addClass('active').removeClass('hidden');
-            if (tabId === 'preview' && window.F2E.Preview) { window.F2E.Preview.updateLivePreview(); }
+
+            // Logic to show Details and remove Code Preview
+            if (tabId === 'code') {
+                // Force hide the dark code container
+                $('.f2e-code-container').addClass('f2e-hidden').hide(); 
+                // Show the details/metadata panel
+                $('.f2e-metadata-panel').removeClass('f2e-hidden').fadeIn(200);
+            } else if (tabId === 'preview') {
+                // Hide details panel when looking at the live preview
+                $('.f2e-metadata-panel').hide();
+                if (window.F2E.Preview) { window.F2E.Preview.updateLivePreview(); }
+            }
         });
     }
 
@@ -199,20 +214,37 @@ window.F2E = window.F2E || {};
     }
 
     function initActions() {
+        // Main Generate
         $generateButton.on('click', function(e) {
             e.preventDefault();
             if (window.F2E.Generate) window.F2E.Generate.generateCode();
         });
 
+        // Advanced Settings Modal (Fixed)
+        $advancedSettingsButton.on('click', function(e) {
+            e.preventDefault();
+            $advancedModal.removeClass('f2e-hidden').addClass('active flex');
+        });
+
+        // Close Modal via X or Done buttons
+        $(document).on('click', '.f2e-close-modal', function(e) {
+            e.preventDefault();
+            $advancedModal.addClass('f2e-hidden').removeClass('active flex');
+        });
+
+        // Close Modal via Background click
+        $advancedModal.on('click', function(e) {
+            if (e.target === this) {
+                $(this).addClass('f2e-hidden').removeClass('active flex');
+            }
+        });
+
+        // Standard Actions
         if (window.F2E.Actions) {
             $clearButton.on('click', window.F2E.Actions.clearContent);
             $copyButton.on('click', window.F2E.Actions.copyContent);
             $downloadButton.on('click', window.F2E.Actions.downloadContent);
         }
-
-        $advancedSettingsButton.on('click', () => $advancedModal.removeClass('hidden').addClass('flex'));
-        $advancedModalCloseButtons.on('click', () => $advancedModal.removeClass('flex').addClass('hidden'));
-        $advancedModal.on('click', (e) => { if (e.target === $advancedModal[0]) $advancedModal.removeClass('flex').addClass('hidden'); });
     }
     
     $(document).ready(function() {
@@ -224,197 +256,4 @@ window.F2E = window.F2E || {};
         window.F2E.Utils.updateInputUI();
     });
 
-})(jQuery);
-
-/**
- * f2e-generate.js
- * Handles the main content generation logic and form data collection.
- */
-
-window.F2E = window.F2E || {};
-
-(function($) {
-    "use strict";
-
-    const Elements = window.F2E.Elements || {};
-    const { i18n } = F2E.Constants || {};
-
-    /**
-     * Polls the server for current progress.
-     */
-    function procesProgress() {
-        if (F2E.State.pollProgress) {
-            clearInterval(F2E.State.pollProgress);
-        }
-        
-        const iterations = F2E.Utils.getIterations();
-        let retryCount = 0;
-        const maxRetries = 20;
-        
-        F2E.State.pollProgress = setInterval(async () => {
-            try {
-                const response = await fetch(
-                    MPAI_vars.ajax_url_progress,
-                    {
-                        method: 'GET',
-                        headers: {
-                            'X-WP-Nonce': MPAI_vars.nonce,
-                            'Accept': 'application/json'
-                        }
-                    }
-                );
-    
-                if (!response.ok) throw new Error("Progress check failed");
-    
-                const progress = await response.json();
-    
-                if (progress && progress.current !== undefined) {
-                    retryCount = 0;
-                    if (progress.current >= iterations) {
-                        clearInterval(F2E.State.pollProgress);
-                        F2E.State.pollProgress = null;
-                    }
-                }
-            } catch (e) {
-                retryCount++;
-                if (retryCount >= maxRetries) {
-                    clearInterval(F2E.State.pollProgress);
-                }
-            }
-        }, 5000);
-    }
-
-    function isValidUrl(string) {
-        try {
-            const url = new URL(string);
-            return url.protocol === 'http:' || url.protocol === 'https:';
-        } catch (_) {
-            return false;
-        }
-    }
-    
-    async function generateCode() {
-        // UI Preparation
-        Elements.$generateButton.prop('disabled', true).addClass('disabled');
-        Elements.$loading.removeClass('f2e-hidden');
-        Elements.$resultContent.addClass('f2e-hidden');
-        $('.f2e-metadata-panel').remove();
-        
-        // Reset Tabs
-        $('.f2e-tab-button').removeClass('active border-[var(--primary-color)] text-[var(--primary-color)]').addClass('text-[var(--text-gray-500)]');
-        $('.f2e-tab-button[data-tab="preview"]').addClass('active border-[var(--primary-color)] text-[var(--primary-color)]');
-        $('#code-tab, #preview-tab').addClass('hidden');
-
-        Elements.$generateButton.html(`<span class="f2e-spinner"></span>${i18n.generating || 'Generating...'}`);
-
-        // Data Collection
-        const iterations = F2E.Utils.getIterations();
-        const contentType = F2E.Utils.getContentType();
-        const isYoutubeMode = Elements.$inputModeToggle.prop('checked');
-        
-        const description = Elements.$description.val().trim();
-        const siteURLValue = Elements.$siteURL.val().trim();
-        const descriptionYt = $('#f2e-description-yt').val().trim(); // Capture optional instructions
-
-        // Validation based on mode
-        if (isYoutubeMode) {
-            if (!siteURLValue || !isValidUrl(siteURLValue)) {
-                alert("Please enter a valid YouTube URL.");
-                F2E.Utils.resetGenerateButton();
-                return;
-            }
-        } else {
-            if (!description) {
-                alert(i18n.please_enter_description || "Please enter a topic or description.");
-                F2E.Utils.resetGenerateButton();
-                return;
-            }
-        }
-
-        F2E.Loader.startLoader();
-
-        // Build FormData
-        const formData = new FormData();
-        formData.append('output_type', 'html'); 
-        formData.append('iterations', iterations);
-        formData.append('content_type', contentType);
-        formData.append('current_code', Elements.$resultCode.text().trim());
-        
-        // Mode-specific data
-        if (isYoutubeMode) {
-            formData.append('siteURL', siteURLValue);
-            formData.append('description_yt', descriptionYt); // Sent to PHP
-            formData.append('input_mode', 'youtube');
-        } else {
-            formData.append('description', description);
-            formData.append('input_mode', 'text');
-        }
-
-        // Advanced Settings
-        formData.append('target_keyword', Elements.$targetKeyword.val().trim());
-        formData.append('audience_level', Elements.$audienceLevel.val().trim());
-        formData.append('desired_tone', Elements.$desiredTone.val().trim());
-        formData.append('language', Elements.$language.val().trim());
-        formData.append('required_length', Elements.$requiredLength.val().trim());
-        formData.append('call_to_action', Elements.$callToAction.val().trim());
-
-        try {
-            const data = await new Promise((resolve, reject) => {
-                procesProgress();
-                $.ajax({
-                    url: MPAI_vars.ajax_url,
-                    method: 'POST',
-                    headers: { 'X-WP-Nonce': MPAI_vars.nonce },
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    beforeSend: function() {
-                        $('#f2e-iteration-heading').text(`Generating your ${F2E.Utils.getContentTypeDisplayName().toLowerCase()}...`);
-                    },
-                    success: (response) => resolve(response),
-                    error: (jqXHR) => reject(new Error(jqXHR.responseJSON?.message || "Server Error"))
-                });
-            });
-
-            if (data.success) {
-                // UI Success State
-                Elements.$resultContent.removeClass('f2e-hidden');
-                Elements.$f2eCodeContainer.removeClass('f2e-hidden');
-                Elements.$resultContainerActions.removeClass('f2e-hidden');
-                Elements.$loading.addClass('f2e-hidden');
-                $('#preview-tab').addClass('active').removeClass('hidden');
-
-                const outputContent = data.content || 'No content generated.'; 
-                F2E.State.lastGeneratedMetadata = { 
-                    title: data.title || '', 
-                    content: outputContent, 
-                    tags: data.tags || [], 
-                    image: data.image || '' 
-                };
-
-                Elements.$resultCode.text(outputContent);
-                
-                // Highlight and Preview
-                F2E.Preview.loadPrism().then(() => {
-                    if (Elements.$resultCode[0]) Prism.highlightElement(Elements.$resultCode[0]);
-                });
-
-                F2E.Metadata.createMetadataPanel(F2E.State.lastGeneratedMetadata);
-                F2E.Preview.updateLivePreview();
-                
-            } else {
-                alert(data.message || "Processing failed.");
-            }
-        } catch (error) {
-            console.error('Generation Error:', error);
-            alert(error.message);
-        } finally {
-            F2E.Loader.clearLoader();
-            F2E.Utils.resetGenerateButton();
-            $('.f2e-tab-button').prop('disabled', false).removeClass('disabled'); 
-        }
-    }
-
-    window.F2E.Generate = { generateCode };
-    
 })(jQuery);

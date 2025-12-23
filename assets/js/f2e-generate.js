@@ -148,33 +148,37 @@ window.F2E = window.F2E || {};
                 });
             });
 
-            if (data.success) {
-                // UI Success State
-                Elements.$resultContent.removeClass('f2e-hidden');
-                Elements.$f2eCodeContainer.removeClass('f2e-hidden');
-                Elements.$resultContainerActions.removeClass('f2e-hidden');
-                Elements.$loading.addClass('f2e-hidden');
-                $('#preview-tab').addClass('active').removeClass('hidden');
+        // Inside generateCode function after successful AJAX
+        if (data.success) {
+            Elements.$resultContent.removeClass('f2e-hidden');
+            Elements.$resultContainerActions.removeClass('f2e-hidden');
+            Elements.$loading.addClass('f2e-hidden');
+            
+            // Set Preview as the default view after generation
+            $('.f2e-tab-button').removeClass('active');
+            $('.f2e-tab-button[data-tab="preview"]').addClass('active');
+            $('#code-tab').addClass('hidden');
+            $('#preview-tab').removeClass('hidden').addClass('active');
 
-                const outputContent = data.content || 'No content generated.'; 
-                F2E.State.lastGeneratedMetadata = { 
-                    title: data.title || '', 
-                    content: outputContent, 
-                    tags: data.tags || [], 
-                    image: data.image || '' 
-                };
+            const outputContent = data.content || 'No content generated.'; 
+            F2E.State.lastGeneratedMetadata = { 
+                title: data.title || '', 
+                content: outputContent, 
+                tags: data.tags || [], 
+                image: data.image || '' 
+            };
 
-                Elements.$resultCode.text(outputContent);
-                
-                // Highlight and Preview
-                F2E.Preview.loadPrism().then(() => {
-                    if (Elements.$resultCode[0]) Prism.highlightElement(Elements.$resultCode[0]);
-                });
+            Elements.$resultCode.text(outputContent);
+            
+            // Create the panel
+            F2E.Metadata.createMetadataPanel(F2E.State.lastGeneratedMetadata);
+            
+            // CRITICAL: Ensure code container is hidden and metadata is ready but hidden for preview mode
+            $('.f2e-code-container').addClass('f2e-hidden').hide();
+            $('.f2e-metadata-panel').hide(); 
 
-                F2E.Metadata.createMetadataPanel(F2E.State.lastGeneratedMetadata);
-                F2E.Preview.updateLivePreview();
-                
-            } else {
+            F2E.Preview.updateLivePreview();
+        }else {
                 alert(data.message || "Processing failed.");
             }
         } catch (error) {

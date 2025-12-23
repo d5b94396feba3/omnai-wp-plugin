@@ -26,32 +26,47 @@ window.F2E = window.F2E || {};
     function initImageRefineModal() {
         if ($('#f2e-image-refine-modal').length === 0) {
             const modalHTML = `
-                <div id="f2e-image-refine-modal" class="f2e-image-modal fixed inset-0 z-[1000] bg-black bg-opacity-75 hidden items-center justify-center p-4 transition-opacity duration-300" aria-modal="true" role="dialog" tabindex="-1">
-                    <div class="f2e-modal-content bg-[var(--bg-white)] rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-hidden flex flex-col transform transition-transform duration-300 scale-95" style="z-index: 1001;">
-                        <div class="f2e-modal-header flex justify-between items-center p-4 border-b border-[var(--border-gray-200)]">
-                            <h5 class="text-xl font-semibold text-[var(--text-gray-800)]">Refine Image Concept</h5>
-                            <button type="button" class="f2e-close-modal text-[var(--text-gray-500)] hover:text-[var(--text-gray-800)] transition-colors" aria-label="Close modal">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6L18 18"/></svg>
-                            </button>
-                        </div>
-                        <div class="f2e-modal-body p-4 flex-1 overflow-y-auto bg-[var(--bg-gray-100)]">
-                            <label for="f2e-image-refine-prompt" class="block text-sm font-medium text-[var(--text-gray-700)] mb-2">
-                                Refine Image Prompt
-                            </label>
-                            <textarea id="f2e-image-refine-prompt" class="w-full p-3 border border-[var(--border-gray-300)] rounded-lg focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)] transition-colors" rows="4" placeholder="Enter instructions to refine the featured image concept (e.g., 'Change the style to watercolor', 'Make the central object metallic')."></textarea>
-                            <div class="mt-3 text-xs text-[var(--text-gray-500)]">
-                                Current Concept: <span id="f2e-current-concept-display" class="font-medium text-[var(--text-gray-700)]"></span>
+            <div id="f2e-image-refine-modal" class="f2e-image-modal fixed inset-0 z-[1000] bg-black bg-opacity-75 hidden items-center justify-center p-4 transition-opacity duration-300" aria-modal="true" role="dialog" tabindex="-1">
+                <div class="f2e-modal-content bg-[var(--bg-white)] rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-hidden flex flex-col transform transition-transform duration-300 scale-95" style="z-index: 1001;">
+                    <div class="f2e-modal-header flex justify-between items-center p-4 border-b border-[var(--border-gray-200)]">
+                        <h5 class="text-xl font-semibold text-[var(--text-gray-800)]">Refine Image Concept</h5>
+                        <button type="button" class="f2e-close-modal text-[var(--text-gray-500)] hover:text-[var(--text-gray-800)] transition-colors" aria-label="Close modal">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6L18 18"/></svg>
+                        </button>
+                    </div>
+                    <div class="f2e-modal-body p-5 flex-1 overflow-y-auto bg-white space-y-4">
+                        
+                        <div class="f2e-modal-image-preview bg-slate-50 p-3 rounded-lg border border-slate-200 shadow-sm">
+                            <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-2">Current Image Selection</label>
+                            <div class="flex gap-4 items-center">
+                                <img id="f2e-refine-image-preview-display" src="" alt="Refine Preview" class="w-24 h-24 object-cover rounded-md border border-slate-300 shadow-sm">
+                                <div class="flex-1">
+                                    <p class="text-xs text-slate-500 leading-tight italic">AI will use this image and your instructions below to generate a new variation.</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="f2e-modal-footer flex justify-end p-4 border-t border-[var(--border-gray-200)] bg-white">
-                            <button id="f2e-submit-refine-button" class="f2e-button f2e-button-primary py-2 px-6 text-base font-medium rounded-xl flex items-center gap-2 shadow-md hover:shadow-lg transition-all duration-200" aria-label="Generate Refined Image">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                                Refine & Generate
-                            </button>
+
+                        <div class="f2e-input-group">
+                            <label for="f2e-image-refine-prompt" class="block text-sm font-bold text-slate-700 mb-2">
+                                Refinement Instructions
+                            </label>
+                            <textarea id="f2e-image-refine-prompt" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none text-sm" rows="3" placeholder="e.g., 'Change the style to watercolor', 'Make it brighter', 'Add a robotic hand'..."></textarea>
+                        </div>
+                        
+                        <div class="p-3 bg-indigo-50 rounded-lg border border-indigo-100">
+                            <span class="block text-[10px] uppercase font-bold text-indigo-400 mb-1">Current Base Concept</span>
+                            <span id="f2e-current-concept-display" class="text-xs text-indigo-900 font-medium"></span>
                         </div>
                     </div>
+                    <div class="f2e-modal-footer flex justify-end p-4 border-t border-[var(--border-gray-200)] bg-white">
+                        <button id="f2e-submit-refine-button" class="f2e-button f2e-button-primary py-2.5 px-6 text-sm font-bold rounded-xl flex items-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-95" aria-label="Generate Refined Image">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                            Refine & Generate
+                        </button>
+                    </div>
                 </div>
-            `;
+            </div>
+        `;
             $('body').append(modalHTML);
         }
 
@@ -71,8 +86,28 @@ window.F2E = window.F2E || {};
         $('#f2e-submit-refine-button').on('click', handleImageRefine);
     }
 
+    // function openRefineModal(currentConcept) {
+    //     if (isImageGenerating) return;
+    //     $('#f2e-current-concept-display').text(currentConcept);
+    //     $('#f2e-image-refine-prompt').val('');
+    //     $('#f2e-image-refine-modal').removeClass('hidden').addClass('flex');
+    // }
+
     function openRefineModal(currentConcept) {
         if (isImageGenerating) return;
+
+        // Fetch current image from state
+        const metadata = window.F2E.State.lastGeneratedMetadata || {};
+        const imageUrl = F2E.Utils.getFeaturedImageUrl(metadata.image);
+
+        // Update Modal Preview Image
+        const $previewImg = $('#f2e-refine-image-preview-display');
+        if (imageUrl) {
+            $previewImg.attr('src', imageUrl).show();
+        } else {
+            $previewImg.hide();
+        }
+
         $('#f2e-current-concept-display').text(currentConcept);
         $('#f2e-image-refine-prompt').val('');
         $('#f2e-image-refine-modal').removeClass('hidden').addClass('flex');
