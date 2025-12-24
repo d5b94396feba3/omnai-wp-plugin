@@ -1,522 +1,248 @@
+<div class="f2e-tool-wrapper max-w-7xl mx-auto px-4 py-8 lg:py-12 bg-white">
 
-
-<div class="f2e-tool-wrapper max-w-7xl mx-auto px-4 py-8 lg:py-12">
-
-
-
-    <h3 class="f2e-section-title text-3xl font-extrabold text-[var(--text-gray-800)] mb-8 lg:mb-10">Content Studio</h3>
-
-    <p class="text-slate-500 text-lg">Generate high-converting social and blog content in seconds.</p>
+    <div class="mb-10">
+        <h3 class="f2e-section-title text-4xl font-black text-slate-900 mb-2">Content Studio</h3>
+        <p class="text-slate-500 text-lg">Generate high-converting social and blog content in seconds.</p>
+    </div>
 
     <div class="f2e-grid-container grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-10">
 
         <div class="f2e-column lg:col-span-1 f2e-left-column">
-
-            <div class="f2e-card f2e-description-field f2e-description-section border border-[var(--border-gray-100)] rounded-xl shadow-lg bg-[var(--bg-white)] overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-[var(--blue-200)] h-full p-6 flex flex-col">
+            <div class="f2e-card f2e-description-field f2e-description-section border border-slate-200 rounded-2xl shadow-sm bg-white overflow-hidden transition-all duration-300 hover:shadow-md h-full p-6 flex flex-col">
 
                 <div class="f2e-form-group space-y-6 flex-1 flex flex-col">
 
-                    <div class="f2e-toggle-switch flex items-center justify-between p-0 m-0">
-
-                        <label for="f2e-input-mode-toggle" class="f2e-switch-label text-base font-semibold text-[var(--text-gray-800)]">Text</label>
-
-                        <label class="f2e-switch">
-
-                            <input type="checkbox" id="f2e-input-mode-toggle">
-
-                            <span class="f2e-slider"></span>
-
+                    <div class="f2e-toggle-switch flex items-center justify-between p-1 bg-slate-100 rounded-xl border border-slate-200">
+                        <label for="f2e-input-mode-toggle" class="f2e-switch-label flex-1 text-center py-2 text-sm font-bold cursor-pointer transition-colors text-slate-700">Text</label>
+                        <label class="f2e-switch relative inline-block w-12 h-6 mx-2">
+                            <input type="checkbox" id="f2e-input-mode-toggle" class="sr-only peer">
+                            <span class="f2e-slider absolute cursor-pointer inset-0 bg-slate-300 rounded-full transition-all peer-checked:bg-blue-600 after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-6"></span>
                         </label>
-
-                        <label for="f2e-input-mode-toggle" class="f2e-switch-label text-base font-semibold text-[var(--text-gray-800)]">Youtube</label>
-
+                        <label for="f2e-input-mode-toggle" class="f2e-switch-label flex-1 text-center py-2 text-sm font-bold cursor-pointer transition-colors text-slate-700">YouTube</label>
                     </div>
 
                     <div id="f2e-text-input-container">
-
                         <div class="f2e-textarea-wrapper flex-1">
-
-                            <label for="f2e-description" class="sr-only">Description for content</label>
-
-                            <input type="hidden" name="desc-tag-name" value="">
-
-                            <textarea id="f2e-description" name="description" class="placeholder:text-sm w-full p-4 border border-[var(--border-gray-200)] rounded-lg focus:ring-2 focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)] h-full resize-y transition-colors duration-200 text-[var(--text-gray-800)] bg-[var(--bg-white)]" 
-
-                            placeholder="Give a topic name or description or any text..."></textarea>
-
-                            <p class="text-gray-500 text-sm mt-2">Enter the topic description or any text to generate content.</p>
-
+                            <label for="f2e-description" class="block text-sm font-bold text-slate-700 mb-2">Topic or Content</label>
+                            <textarea id="f2e-description" name="description" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all outline-none text-slate-800 h-48 resize-none" placeholder="Give a topic name or description or any text..."></textarea>
+                            <p class="text-slate-400 text-xs mt-2">Enter the topic description or any text to generate content.</p>
                         </div>
-
                     </div>
 
                     <div id="f2e-youtube-input-container" class="f2e-hidden">
-
                         <div id="panel-website" role="tabpanel" aria-labelledby="tab-website" class="tab-panel">
-
-                            <label for="website-url-input" class="block text-lg font-medium text-gray-700 mb-2">Youtube Video URL</label>
-
-                            <input
-
-                            type="url"
-
-                            id="f2e-site-url"
-
-                            placeholder="<?php esc_attr_e('https://www.youtube.com/watch?v=LO5OMv7J1h8', 'figma-to-elementor'); ?>"
-
-                            class="w-full px-4 py-2 text-sm text-gray-800 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
-
-                            style="border-radius: 5px;"
-
-                            >
-
-                            <p class="text-gray-500 text-sm mt-2 mb-4">Enter the public URL of a video you want to explain or blog.</p>
-
+                            <label for="f2e-site-url" class="block text-sm font-bold text-slate-700 mb-2">YouTube Video URL</label>
+                            <input type="url" id="f2e-site-url" placeholder="https://www.youtube.com/watch?v=..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                            <p class="text-slate-400 text-xs mt-2 mb-4">Enter the public URL of a video you want to explain or blog.</p>
                         </div>
-
                         
-
-                        <button type="button" id="f2e-toggle-yt-description" class="f2e-button f2e-button-secondary py-2 px-4 rounded-lg border border-[var(--gray-300)] text-[var(--text-gray-700)] hover:bg-[var(--bg-gray-100)] focus:outline-none focus:ring-2 focus:ring-[var(--gray-300)] flex items-center gap-2 transition-colors duration-200 text-sm">
-
-                            <span class="f2e-toggle-icon">
-
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-
-                            </span>
-
-                            Add Specific Instructions (Optional)
-
+                        <button type="button" id="f2e-toggle-yt-description" class="f2e-button f2e-button-secondary w-full py-2.5 px-4 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-semibold flex items-center justify-center gap-2 transition-all text-sm">
+                            <i class="fas fa-plus-circle text-xs"></i> Add Specific Instructions (Optional)
                         </button>
-
                         
-
                         <div id="f2e-description-yt-container" class="mt-4">
-
-                        <div class="f2e-textarea-wrapper flex-1">
-
-                            <label for="f2e-description-yt" class="block text-sm font-medium text-gray-700 mb-1">Additional Instructions for AI</label>
-
-                            <textarea id="f2e-description-yt" name="description-yt" class="w-full p-4 border border-[var(--border-gray-200)] rounded-lg h-32 bg-[var(--bg-white)]" placeholder="E.g., Focus only on the technical details..."></textarea>
-
+                            <div class="f2e-textarea-wrapper flex-1">
+                                <label for="f2e-description-yt" class="block text-xs font-bold text-slate-500 mb-1">Additional Instructions for AI</label>
+                                <textarea id="f2e-description-yt" name="description-yt" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl h-24 text-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="E.g., Focus only on the technical details..."></textarea>
+                            </div>
                         </div>
-
                     </div>
-
-                    </div>
-
-                    
 
                     <div class="f2e-setting-group">
-
-                        <label class="f2e-setting-label block text-lg font-medium text-[var(--text-gray-700)] mb-2">Target Platform <span class="text-[var(--text-red-500)]">*</span></label>
-
+                        <label class="f2e-setting-label block text-sm font-bold text-slate-700 mb-2">Target Platform <span class="text-rose-500">*</span></label>
                         <div class="f2e-content-type-selector relative">
-                            <select id="f2e-content-type" class="w-full p-3 border border-[var(--border-gray-200)] rounded-lg focus:ring-2 focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)] bg-white text-[var(--text-gray-800)] appearance-none cursor-pointer transition-colors duration-200">
-                                <option value="medium">Medium Post</option>
-                                <option value="devio">Dev.io Post</option>
-                                <option value="linkedin">Linkedin Post</option>
-                                <option value="facebook">Facebook Post</option>
-                                <option value="instagram">Instagram Post</option>
-                                <option value="x-twitter">X (Formaly Known Twitter) Post</option>
+                            <select id="f2e-content-type" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl appearance-none cursor-pointer focus:ring-2 focus:ring-blue-500 outline-none text-slate-800 font-medium">
                                 <option value="website">Website Blog Post</option>
+                                <option value="linkedin">LinkedIn Professional Post</option>
+                                <option value="medium">Medium Article</option>
+                                <option value="devio">Dev.io Technical Post</option>
+                                <option value="facebook">Facebook Social Post</option>
+                                <option value="instagram">Instagram Caption</option>
+                                <option value="x-twitter">X (Twitter) Thread</option>
                             </select>
-                            
-                          
+                           
                         </div>
-                        <p class="f2e-setting-description text-[var(--text-gray-500)] text-sm mt-2">Choose Target Platform</p> 
-
                     </div>
-
-                    
 
                     <div class="f2e-setting-group">
                         <label class="f2e-setting-label block text-sm font-bold text-slate-700 mb-2">Quality Iterations <span class="text-rose-500">*</span></label>
                         <div class="f2e-iteration-selector flex p-1 bg-slate-100 rounded-xl border border-slate-200" role="radiogroup">
                             <button type="button" class="f2e-iteration-option flex-1 py-2 text-xs font-bold rounded-lg transition-all" data-value="1">Draft (1)</button>
-                            <button type="button" class="f2e-iteration-option active flex-1 py-2 text-xs font-bold rounded-lg transition-all bg-white shadow-sm text-indigo-600" data-value="2">Polished (2)</button>
+                            <button type="button" class="f2e-iteration-option active flex-1 py-2 text-xs font-bold rounded-lg transition-all bg-white shadow-sm text-blue-600" data-value="2">Polished (2)</button>
                         </div>
                     </div>
 
-                    <div class="f2e-setting-group mt-6">
-
-                        <button id="f2e-advanced-settings-button" type="button" class="f2e-button f2e-button-secondary py-2 px-4 rounded-lg border border-[var(--gray-300)] text-[var(--text-gray-700)] hover:bg-[var(--bg-gray-100)] focus:outline-none focus:ring-2 focus:ring-[var(--gray-300)] flex items-center gap-2 transition-colors duration-200">
-
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-
-                                <path d="M12 20v-8M12 4v4M4 12h4M16 12h4M6 16v-2h12v2M8 8v8M16 8v8"/>
-
-                            </svg>
-
-                            Advanced Settings
-
+                    <div class="f2e-setting-group pt-2">
+                        <button id="f2e-advanced-settings-button" type="button" class="f2e-button f2e-button-secondary w-full py-2.5 px-4 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 font-bold flex items-center justify-center gap-2 transition-all">
+                            <i class="fas fa-sliders-h text-sm"></i> Advanced Settings
                         </button>
-
                     </div>
 
                 </div>
 
-
-
-                <button id="f2e-generate-button" class="f2e-button f2e-button-primary py-3 px-6 text-lg font-semibold w-full mt-8 flex items-center justify-center gap-3 rounded-xl shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-offset-2 transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed" aria-label="Generate content with 100 points">
-
+                <button id="f2e-generate-button" class="f2e-button f2e-button-primary py-4 px-6 text-lg font-bold w-full mt-8 flex items-center justify-center gap-3 rounded-2xl bg-blue-600 text-white shadow-lg shadow-blue-200 hover:bg-blue-700 hover:-translate-y-0.5 transition-all">
                     <span class="f2e-button-content flex items-center gap-2">
-
                         Generate
-
-                        <span class="f2e-points-badge ml-2 px-3 py-1 bg-[var(--white-opacity-20)] rounded-full text-xs font-bold">100 Points</span>
-
+                        <span class="f2e-points-badge ml-2 px-2 py-0.5 bg-blue-500 rounded text-[10px] font-black uppercase tracking-tighter">100 Points</span>
                     </span>
-
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="f2e-button-icon text-white">
-
-                        <path d="M13 6L19 12L13 18M5 6L11 12L5 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-
-                    </svg>
-
+                    <i class="fas fa-magic text-sm"></i>
                 </button>
 
             </div>
-
         </div>
 
+        <div class="f2e-column lg:col-span-2">
+            <div class="f2e-result-section f2e-card h-full border border-slate-200 rounded-2xl shadow-sm bg-white overflow-hidden flex flex-col transition-all duration-300 hover:shadow-md">
 
-
-        <div class="f2e-column lg:col-span-2 -mt-2">
-
-            <div class="f2e-result-section f2e-card p-6 h-full border border-[var(--border-gray-100)] rounded-xl shadow-lg bg-[var(--bg-white)] overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col">
-
-
-
-                <div id="f2e-result-container" class="f2e-hidden-disable flex-1 flex flex-col">
-
-                    <div class="f2e-result-header mb-4">
-
-                        <div class="f2e-result-actions f2e-hidden flex justify-between items-center flex-wrap gap-3">
-
-                            <div class="f2e-left-actions flex flex-wrap gap-3">
-
-                              
-
-                                <button id="f2e-copy-button" class="f2e-button f2e-button-secondary py-2 px-4 rounded-lg border border-[var(--gray-300)] text-[var(--text-gray-700)] hover:bg-[var(--bg-gray-100)] focus:outline-none focus:ring-2 focus:ring-[var(--gray-300)] flex items-center gap-2 transition-colors duration-200" aria-label="Copy generated content">
-
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" aria-hidden="true">
-
-                                        <path d="M8 16H6C4.89543 16 4 15.1046 4 14V6C4 4.89543 4.89543 4 6 4H14C15.1046 4 16 4.89543 16 6V8M10 20H18C19.1046 20 20 19.1046 20 18V10C20 8.89543 19.1046 8 18 8H10C8.89543 8 8 8.89543 8 10V18C8 19.1046 8.89543 20 10 20Z" />
-
-                                    </svg>
-
-                                    Copy
-
-                                </button>
-
-                                <button id="f2e-download-button" class="f2e-button f2e-button-secondary py-2 px-4 rounded-lg border border-[var(--gray-300)] text-[var(--text-gray-700)] hover:bg-[var(--bg-gray-100)] focus:outline-none focus:ring-2 focus:ring-[var(--gray-300)] flex items-center gap-2 transition-colors duration-200" aria-label="Download generated content">
-
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-
-                                        <path d="M12 15L12 3M12 15L8 11M12 15L16 11M21 15V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V15" />
-
-                                    </svg>
-
-                                    Download
-
-                                </button>
-
-                            </div>
-
-                            <button id="f2e-clear-button" class="f2e-button2 f2e-button-danger py-2 px-4 rounded-lg bg-[var(--red-500)] text-[var(--bg-white)] hover:bg-[var(--red-600)] focus:outline-none focus:ring-2 focus:ring-[var(--red-500)] flex items-center gap-2 transition-colors duration-200" aria-label="Clear output">
-
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-
-                                    <path d="M18 6L6 18M6 6L18 18" />
-
-                                </svg>
-
-                                Clear
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
+                <div id="f2e-result-container" class="flex-1 flex flex-col p-6">
                     
+                    <div class="f2e-result-header mb-6">
+                        <div class="f2e-result-actions flex justify-between items-center flex-wrap gap-3">
+                            <div class="f2e-left-actions flex gap-2">
+                                <button id="f2e-copy-button" class="px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50 flex items-center gap-2 transition-all">
+                                    <i class="far fa-copy"></i> Copy
+                                </button>
+                                <button id="f2e-download-button" class="px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50 flex items-center gap-2 transition-all">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                            </div>
+                            <button id="f2e-clear-button" class="px-4 py-2 bg-rose-50 text-rose-600 rounded-xl text-sm font-bold hover:bg-rose-100 transition-all">
+                                <i class="fas fa-trash-alt mr-2"></i> Clear
+                            </button>
+                        </div>
+                    </div>
 
                     <div class="f2e-tabs-container mb-4">
-
-                        <div class="f2e-tabs-nav flex border-b border-[var(--border-gray-200)]">
-                            <button class="f2e-tab-button active py-2 px-4 border-b-2 border-[var(--primary-color)] text-[var(--primary-color)] font-medium" data-tab="preview">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="inline mr-2">
-                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                                    <line x1="8" y1="21" x2="16" y2="21"></line>
-                                    <line x1="12" y1="17" x2="12" y2="21"></line>
-                                </svg>
-                                PREVIEW
+                        <div class="f2e-tabs-nav flex gap-1 bg-slate-100 p-1 rounded-xl w-fit">
+                            <button class="f2e-tab-button active py-2 px-6 rounded-lg font-bold text-sm bg-white shadow-sm text-blue-600" data-tab="preview">
+                                <i class="fas fa-eye mr-2"></i> PREVIEW
                             </button>
-                            <button class="f2e-tab-button py-2 px-4 text-[var(--text-gray-500)] font-medium" data-tab="code">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="inline mr-2">
-                                    <polyline points="16 18 22 12 16 6"></polyline>
-                                    <polyline points="8 6 2 12 8 18"></polyline>
-                                </svg>
-                                DETAILS
+                            <button class="f2e-tab-button py-2 px-6 rounded-lg font-bold text-sm text-slate-500 hover:text-slate-700" data-tab="code">
+                                <i class="fas fa-code mr-2"></i> DETAILS
                             </button>
                         </div>
-
                     </div>
 
-
-
-                    <div class="f2e-tab-content active" id="code-tab">
-
-                        <div class="f2e-code-container bg-gray-800 text-white rounded-lg p-4 overflow-auto h-96 font-mono text-sm shadow-inner flex-1">
-
-                            <pre><code id="f2e-result" class="language-html"> 
-
-                                <p id="result-default-text" class="text-[var(--text-gray-600)] text-center">
-
-                                    No content generated yet.
-
-                                </p>
-
-                            </code></pre>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <div class="f2e-tab-content hidden" id="preview-tab">
-
-                        <div class="f2e-preview-container border border-[var(--border-gray-200)] rounded-lg bg-white overflow-hidden h-96 flex flex-col">
-
-                            <div class="f2e-preview-content flex-1 bg-white">
-
-                                <iframe id="f2e-preview-frame" class="w-full h-full border-0" sandbox="allow-same-origin allow-scripts"></iframe>
-
+                    <div class="relative flex-1 min-h-[500px] flex flex-col">
+                        <div class="f2e-tab-content active flex-1 flex flex-col" id="code-tab">
+                            <div class="f2e-code-container bg-slate-900 text-slate-300 rounded-2xl p-6 overflow-auto font-mono text-sm shadow-inner flex-1 border border-slate-800">
+                                <pre><code id="f2e-result" class="language-html leading-relaxed text-blue-100"><p id="result-default-text" class="text-slate-500 text-center py-20">No content generated yet.</p></code></pre>
                             </div>
-
                         </div>
 
-                    </div>
+                        <div class="f2e-tab-content hidden flex-1 flex flex-col" id="preview-tab">
+                            <div class="f2e-preview-container border border-slate-200 rounded-2xl bg-white overflow-hidden flex-1 flex flex-col shadow-inner">
+                                <iframe id="f2e-preview-frame" class="w-full h-full border-0" sandbox="allow-same-origin allow-scripts"></iframe>
+                            </div>
+                        </div>
 
-
-
-                    <div id="f2e-loading" class="f2e-loading-container f2e-hidden flex flex-col items-center justify-center py-12 flex-1" role="status" aria-live="polite" aria-label="Generating content">
-                        <div class="f2e-loading-spinner animate-spin rounded-full h-12 w-12 border-4 border-t-4 border-[var(--blue-600-text)] border-opacity-75"></div>
-                        <div class="f2e-loading-content mt-4 text-center">
-                            <h4 id="f2e-iteration-heading" class="text-xl font-semibold mb-2 text-[var(--text-gray-800)]">Generating your content...</h4>
-                            <p id="f2e-iteration-status" class="text-[var(--text-gray-600)] text-center"></p>
+                        <div id="f2e-loading" class="f2e-loading-container f2e-hidden absolute inset-0 bg-white/90 backdrop-blur-sm z-10 flex flex-col items-center justify-center py-12 rounded-2xl" role="status">
+                            <div class="f2e-loading-spinner animate-spin rounded-full h-14 w-14 border-4 border-slate-200 border-t-blue-600"></div>
+                            <div class="f2e-loading-content mt-6 text-center">
+                                <h4 id="f2e-iteration-heading" class="text-xl font-bold text-slate-900 mb-1">Generating your content...</h4>
+                                <p id="f2e-iteration-status" class="text-slate-500 text-sm"></p>
+                            </div>
                         </div>
                     </div>
 
                 </div>
-
-                
-
             </div>
-
         </div>
 
     </div>
 
-    <div class="f2e-disclaimer mt-8 p-4 bg-[var(--blue-50-light)] text-[var(--blue-800-dark)] rounded-lg text-sm flex items-start gap-2" role="alert">
-
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 mt-0.5 w-4 h-4 text-[var(--blue-600-text)]" aria-hidden="true">
-
-            <path d="M12 13V9M12 17V16.5M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-
-        </svg>
-
-        Important: Your input and generated content are not stored. All data will be cleared upon page refresh and images stored temporarily.
-
+    <div class="f2e-disclaimer mt-8 p-5 bg-blue-50 border border-blue-100 rounded-2xl text-blue-800 text-sm flex items-start gap-4">
+        <i class="fas fa-info-circle mt-0.5 text-blue-600 text-lg"></i>
+        <p class="leading-relaxed">
+            <strong>Important:</strong> Your input and generated content are not stored. All data will be cleared upon page refresh and images stored temporarily.
+        </p>
     </div>
 
-
-
-    <div id="f2e-advanced-modal" class="f2e-modal fixed inset-0 z-[1000] bg-black bg-opacity-75 hidden items-center justify-center p-4 transition-opacity duration-300" aria-modal="true" role="dialog" tabindex="-1">
-
-        <div class="f2e-modal-content bg-[var(--bg-white)] rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-hidden flex flex-col transform transition-transform duration-300 scale-95" style="z-index: 1001;">
-
+    <div id="f2e-advanced-modal" class="f2e-modal fixed inset-0 z-[1000] bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 transition-all duration-300" aria-modal="true" role="dialog" tabindex="-1">
+        <div class="f2e-modal-content bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-hidden flex flex-col transform transition-all scale-95">
             
-
-            <div class="f2e-modal-header flex justify-between items-center p-4 border-b border-[var(--border-gray-200)]">
-
-                <h5 class="text-xl font-semibold text-[var(--text-gray-800)]">Advanced Content Settings</h5>
-
-                <button type="button" class="f2e-close-modal text-[var(--text-gray-500)] hover:text-[var(--text-gray-800)] transition-colors" aria-label="Close modal">
-
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6L18 18"/></svg>
-
+            <div class="f2e-modal-header flex justify-between items-center p-6 border-b border-slate-100">
+                <h5 class="text-xl font-bold text-slate-900">Advanced Content Settings</h5>
+                <button type="button" class="f2e-close-modal text-slate-400 hover:text-slate-900 transition-colors">
+                    <i class="fas fa-times text-xl"></i>
                 </button>
-
             </div>
-
             
-
-            <div class="f2e-modal-body p-6 flex-1 overflow-y-auto space-y-5">
-
-                
-
+            <div class="f2e-modal-body p-6 overflow-y-auto space-y-6">
                 <div class="f2e-form-group">
-
-                    <label for="f2e-target-keyword" class="block text-lg font-medium text-gray-700 mb-2">Target Keyword</label>
-
-                    <input
-
-                        type="text"
-
-                        id="f2e-target-keyword"
-
-                        placeholder="React Performance Optimization"
-
-                        class="w-full px-4 py-2 text-sm text-gray-800 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
-
-                        style="border-radius: 5px;"
-
-                    >
-
-                    <p class="text-gray-500 text-sm mt-2">The primary keyword for SEO.</p>
-
+                    <label for="f2e-target-keyword" class="block text-sm font-bold text-slate-700 mb-2">Target Keyword</label>
+                    <input type="text" id="f2e-target-keyword" placeholder="React Performance Optimization" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                    <p class="text-slate-400 text-[10px] mt-1 uppercase tracking-wider">The primary keyword for SEO.</p>
                 </div>
 
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="f2e-form-group">
+                        <label for="f2e-audience-level" class="block text-sm font-bold text-slate-700 mb-2">Audience Level</label>
+                        <select id="f2e-audience-level" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-sm font-medium appearance-none">
+                            <option value="">(Select Level)</option>
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Advanced">Advanced</option>
+                        </select>
+                    </div>
 
-
-                <div class="f2e-form-group">
-
-                    <label for="f2e-audience-level" class="block text-lg font-medium text-gray-700 mb-2">Audience Level</label>
-
-                    <select id="f2e-audience-level" class="w-full p-3 border border-[var(--border-gray-200)] rounded-lg focus:ring-2 focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)] bg-white text-[var(--text-gray-800)] appearance-none cursor-pointer transition-colors duration-200">
-
-                        <option value="">(Select Level)</option>
-
-                        <option value="Beginner">Beginner</option>
-
-                        <option value="Intermediate">Intermediate</option>
-
-                        <option value="Advanced">Advanced</option>
-
-                    </select>
-
-                    <p class="text-gray-500 text-sm mt-2">The required technical level of the audience.</p>
-
+                    <div class="f2e-form-group">
+                        <label for="f2e-desired-tone" class="block text-sm font-bold text-slate-700 mb-2">Desired Tone</label>
+                        <select id="f2e-desired-tone" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-sm font-medium appearance-none">
+                            <option value="">(Select Tone)</option>
+                            <option value="Tutorial/Instructive">Tutorial/Instructive</option>
+                            <option value="Opinion/Thought Leadership">Opinion/Thought Leadership</option>
+                            <option value="In-depth Analysis">In-depth Analysis</option>
+                            <option value="Casual/Informal">Casual/Informal</option>
+                            <option value="Formal/Academic">Formal/Academic</option>
+                        </select>
+                    </div>
                 </div>
 
-                
-
                 <div class="f2e-form-group">
-
-                    <label for="f2e-desired-tone" class="block text-lg font-medium text-gray-700 mb-2">Desired Tone</label>
-
-                    <select id="f2e-desired-tone" class="w-full p-3 border border-[var(--border-gray-200)] rounded-lg focus:ring-2 focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)] bg-white text-[var(--text-gray-800)] appearance-none cursor-pointer transition-colors duration-200">
-
-                        <option value="">(Select Tone)</option>
-
-                        <option value="Tutorial/Instructive">Tutorial/Instructive</option>
-
-                        <option value="Opinion/Thought Leadership">Opinion/Thought Leadership</option>
-
-                        <option value="In-depth Analysis">In-depth Analysis</option>
-
-                        <option value="Casual/Informal">Casual/Informal</option>
-
-                        <option value="Formal/Academic">Formal/Academic</option>
-
-                    </select>
-
-                    <p class="text-gray-500 text-sm mt-2">The style and tone of the generated content.</p>
-
+                    <label for="f2e-language" class="block text-sm font-bold text-slate-700 mb-2">Language</label>
+                    <div class="relative">
+                        <select id="f2e-language" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-sm font-medium appearance-none">
+                            <option value="English">English (Global)</option>
+                            <option value="German">German (Deutsch) - DE</option>
+                            <option value="French">French (Français) - FR</option>
+                            <option value="Spanish">Spanish (Español) - ES</option>
+                            <option value="Italian">Italian (Italiano) - IT</option>
+                            <option value="Dutch">Dutch (Nederlands) - NL</option>
+                            <option value="Portuguese">Portuguese (Português) - PT</option>
+                            <option value="Swedish">Swedish (Svenska) - SE</option>
+                            <option value="Japanese">Japanese (日本語) - JP</option>
+                            <option value="Chinese">Chinese (Mandarin) - CN</option>
+                        </select>
+                    </div>
+                    <p class="text-slate-400 text-[10px] mt-1 uppercase tracking-wider">The language for the generated output.</p>
                 </div>
 
-
-
                 <div class="f2e-form-group">
-
-                    <label for="f2e-language" class="block text-lg font-medium text-gray-700 mb-2">Language</label>
-
-                    <select id="f2e-language" class="w-full p-3 border border-[var(--border-gray-200)] rounded-lg focus:ring-2 focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)] bg-white text-[var(--text-gray-800)] appearance-none cursor-pointer transition-colors duration-200">
-
-                        <option value="English">English</option>
-
-                        <option value="Spanish">Spanish</option>
-
-                        <option value="French">French</option>
-
-                        <option value="German">German</option>
-
-                        <option value="Japanese">Japanese</option>
-
-                        <option value="Chinese">Chinese</option>
-
-                    </select>
-
-                    <p class="text-gray-500 text-sm mt-2">The language for the generated output.</p>
-
-                </div>
-
-
-
-                <div class="f2e-form-group">
-
-                    <label for="f2e-required-length" class="block text-lg font-medium text-gray-700 mb-2">Required Length</label>
-
-                    <select id="f2e-required-length" class="w-full p-3 border border-[var(--border-gray-200)] rounded-lg focus:ring-2 focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)] bg-white text-[var(--text-gray-800)] appearance-none cursor-pointer transition-colors duration-200">
-
+                    <label for="f2e-required-length" class="block text-sm font-bold text-slate-700 mb-2">Required Length</label>
+                    <select id="f2e-required-length" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-sm font-medium appearance-none">
                         <option value="">(Default/Auto)</option>
-
                         <option value="Short (approx 300 words)">Short (approx 300 words)</option>
-
                         <option value="Medium (approx 500-800 words)">Medium (approx 500-800 words)</option>
-
                         <option value="Long (approx 1000-1500 words)">Long (approx 1000-1500 words)</option>
-
                         <option value="In-depth (2000+ words)">In-depth (2000+ words)</option>
-
                     </select>
-
-                    <p class="text-gray-500 text-sm mt-2">Specify the approximate length of the final content.</p>
-
                 </div>
-
-
 
                 <div class="f2e-form-group">
-
-                    <label for="f2e-call-to-action" class="block text-lg font-medium text-gray-700 mb-2">Call to Action (CTA)</label>
-
-                    <textarea 
-
-                        id="f2e-call-to-action" 
-
-                        placeholder="e.g., Subscribe to our newsletter for more tips!"
-
-                        class="w-full px-4 py-2 text-sm text-gray-800 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
-
-                        style="border-radius: 5px; height: 80px;"
-
-                    ></textarea>
-
-                    <p class="text-gray-500 text-sm mt-2">A specific instruction to conclude the post.</p>
-
+                    <label for="f2e-call-to-action" class="block text-sm font-bold text-slate-700 mb-2">Call to Action (CTA)</label>
+                    <textarea id="f2e-call-to-action" placeholder="e.g., Subscribe to our newsletter for more tips!" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl h-24 text-sm focus:ring-2 focus:ring-blue-500 outline-none resize-none"></textarea>
+                    <p class="text-slate-400 text-[10px] mt-1 uppercase tracking-wider">A specific instruction to conclude the post.</p>
                 </div>
 
-
-
             </div>
-
             
-
-            <div class="f2e-modal-footer flex justify-end p-4 border-t border-[var(--border-gray-200)]">
-
-                <button type="button" class="f2e-close-modal f2e-button f2e-button-primary py-2 px-6 text-base font-medium rounded-xl flex items-center gap-2 shadow-md hover:shadow-lg transition-all duration-200">
-
+            <div class="f2e-modal-footer p-6 border-t border-slate-100 flex justify-end">
+                <button type="button" class="f2e-close-modal f2e-button f2e-button-primary py-3 px-10 text-base font-bold text-white bg-blue-600 rounded-2xl shadow-lg hover:bg-blue-700 transition-all">
                     Done
-
                 </button>
-
             </div>
-
         </div>
-
     </div>
 
 </div>
