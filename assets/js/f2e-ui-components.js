@@ -524,8 +524,6 @@ const Preview = {
 
 };
 
-// --- Metadata Functions (MODIFIED SECTION) ---
-
 const Metadata = {
   createMetadataPanel: function(metadata) {
     $('.f2e-metadata-panel').remove();
@@ -548,7 +546,7 @@ const Metadata = {
                   <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2"/>
                 </svg>
             </div>
-            <h4 class="font-bold text-slate-800 text-lg mt-5">Content Details</h4>
+            <h4 class="font-bold text-slate-800 text-lg">Content Details</h4>
           </div>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="f2e-metadata-chevron text-slate-400 transition-transform duration-200 rotate-180">
             <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -591,13 +589,13 @@ const Metadata = {
                 
                 <div class="f2e-image-actions-new flex flex-wrap items-center gap-2">
                   ${isImageGenerated ? `
-                    <button class="f2e-refine-image-button f2e-button bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-lg shadow-indigo-100 transition-all active:scale-95">
+                    <button class="f2e-refine-image-button f2e-button bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all active:scale-95">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                       </svg>
                       Refine
                     </button>
-                    <button class="f2e-regenerate-image-button f2e-button bg-white hover:bg-slate-50 text-slate-700 py-2.5 px-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-center gap-2 transition-all text-xs font-bold active:scale-95">
+                    <button class="f2e-regenerate-image-button f2e-button bg-white hover:bg-blue-600 hover:text-white text-slate-700 py-2.5 px-4 rounded-xl border border-slate-200 flex items-center justify-center gap-2 transition-all text-xs font-bold active:scale-95">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
                       </svg>
@@ -605,7 +603,7 @@ const Metadata = {
                     </button>
                   ` : ''}
                   
-                  <button class="f2e-open-image-modal f2e-button bg-white hover:bg-slate-50 text-slate-600 py-2.5 px-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-center gap-2 transition-all text-xs font-bold active:scale-95" data-image-url="${imageUrl}" data-image-title-slug="${imageTitleSlug}">
+                  <button class="f2e-open-image-modal f2e-button bg-white hover:bg-blue-600 hover:text-white text-slate-600 py-2.5 px-4 rounded-xl border border-slate-200 flex items-center justify-center gap-2 transition-all text-xs font-bold active:scale-95" data-image-url="${imageUrl}" data-image-title-slug="${imageTitleSlug}">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
                     </svg>
@@ -613,7 +611,7 @@ const Metadata = {
                   </button>
 
                   <a href="${imageUrl}" download="${imageTitleSlug}-concept.jpg"
-                  class="f2e-button bg-slate-800 hover:bg-slate-900 text-white py-2.5 px-4 rounded-xl shadow-sm flex items-center justify-center gap-2 transition-all text-xs font-bold active:scale-95">
+                  class="f2e-button bg-slate-800 hover:bg-blue-600 hover:text-white text-white py-2.5 px-4 rounded-xl shadow-sm flex items-center justify-center gap-2 transition-all text-xs font-bold active:scale-95">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
                     </svg>
@@ -627,7 +625,7 @@ const Metadata = {
           ` : ''}
 
           <div class="f2e-metadata-actions pt-4 border-t border-slate-100">
-            <button class="f2e-copy-metadata w-full f2e-button bg-slate-100 hover:bg-slate-200 text-slate-700 py-3 px-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all active:scale-[0.98] text-sm">
+            <button class="f2e-copy-metadata w-full f2e-button bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 py-3 px-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all active:scale-[0.98] text-sm">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M8 16H6C4.89543 16 4 15.1046 4 14V6C4 4.89543 4.89543 4 6 4H14C15.1046 4 16 4.89543 16 6V8M10 20H18C19.1046 20 20 19.1046 20 18V10C20 8.89543 19.1046 8 18 8H10C8.89543 8 8 8.89543 8 10V18C8 19.1046 8.89543 20 10 20Z" />
               </svg>
@@ -640,7 +638,7 @@ const Metadata = {
 
     $('.f2e-code-container').after(metadataPanel);
     
-    // Existing event listeners (Headers slide, Copy logic, etc.)
+    // Header Logic
     $('.f2e-metadata-header').on('click', function() {
       const $content = $(this).next('.f2e-metadata-content');
       const $chevron = $(this).find('.f2e-metadata-chevron');
@@ -649,11 +647,7 @@ const Metadata = {
     });
 
     $('.f2e-copy-metadata').on('click', function() {
-      const metadataText = `
-Title: ${metadata.title || 'Not specified'}
-Tags: ${tagsArray.length > 0 ? tagsArray.join(', ') : 'No tags'}
-Image Concept: ${metadata.image || 'Not specified'}
-      `.trim();
+      const metadataText = `Title: ${metadata.title || 'Not specified'}\nTags: ${tagsArray.length > 0 ? tagsArray.join(', ') : 'No tags'}\nImage Concept: ${metadata.image || 'Not specified'}`.trim();
       navigator.clipboard.writeText(metadataText)
         .then(() => Actions.showCopiedMessage($(this)))
         .catch(err => alert('Failed to copy metadata'));
@@ -699,7 +693,7 @@ const Modal = {
 
             <div class="f2e-modal-footer flex justify-center p-4 border-t border-[var(--border-gray-200)]">
 
-              <a id="f2e-modal-download-button" href="#" download="featured-image.jpg" class="f2e-button f2e-button-primary py-2 px-6 text-base font-medium rounded-xl flex items-center gap-2 shadow-md hover:shadow-lg transition-all duration-200" aria-label="Download Image from modal">
+              <a id="f2e-modal-download-button" href="#" download="featured-image.jpg" class="f2e-button hover:bg-blue-600 hover:text-white f2e-button-primary py-2 px-6 text-base font-medium rounded-xl flex items-center gap-2 shadow-md hover:shadow-lg transition-all duration-200" aria-label="Download Image from modal">
 
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 

@@ -441,7 +441,7 @@ body {
 }
 
 #result-default-text {
-    text-align: left;
+    text-align: center;
     height: 100%;
     color: var(--text-gray-500); /* Grayish text for "No content" */
     font-weight: 500;
@@ -1003,10 +1003,26 @@ body {
     border-radius: 50%;
 }
 
+.f2e-done-modal {
+    background: var(--primary-700);
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    transition: color 0.2s ease;
+    padding: 8px; /* Larger hit area */
+    border-radius: 50%;
+}
+
 .f2e-close-modal:hover {
     color: var(--text-gray-800);
     background-color: var(--bg-gray-100);
 }
+
+.f2e-done-modal:hover {
+    color: #fff;
+    background-color: var(--bg-gray-100);
+}
+
 .f2e-close-modal:focus {
     outline: none;
     box-shadow: 0 0 0 2px var(--border-gray-300);

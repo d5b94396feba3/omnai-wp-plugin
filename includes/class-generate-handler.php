@@ -158,7 +158,8 @@ class GenerateHandler {
             }
 
 
-        if( !empty($description) && $output_type === 'html' && empty($current_code)) {
+            $is_youtube_mode = !empty($siteURL);
+            if (($is_youtube_mode || !empty($description)) && $output_type === 'html' && empty($current_code)) {
 
             error_log('Initializing Google Gemini for generating 3d badge maker from the description');
             
@@ -219,7 +220,8 @@ class GenerateHandler {
 
         }
 
-        if(!empty($description) && $output_type === 'html' && !empty($current_code)) {
+        $is_youtube_mode = !empty($siteURL);
+        if (($is_youtube_mode || !empty($description)) && $output_type === 'html' && !empty($current_code)) {
 
             $refine_system_prompt =  $system_prompt;
 

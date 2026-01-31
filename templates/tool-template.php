@@ -36,7 +36,7 @@
                             <p class="text-slate-400 text-xs mt-2 mb-4">Enter the public URL of a video you want to explain or blog.</p>
                         </div>
                         
-                        <button type="button" id="f2e-toggle-yt-description" class="f2e-button f2e-button-secondary w-full py-2.5 px-4 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-semibold flex items-center justify-center gap-2 transition-all text-sm">
+                        <button type="button" id="f2e-toggle-yt-description" class="f2e-button f2e-button-secondary w-full py-2.5 px-4 rounded-xl border border-slate-200 text-slate-600 hover:bg-blue-600 hover:text-white font-semibold flex items-center justify-center gap-2 transition-all text-sm">
                             <i class="fas fa-plus-circle text-xs"></i> Add Specific Instructions (Optional)
                         </button>
                         
@@ -55,12 +55,11 @@
                                 <option value="website">Website Blog Post</option>
                                 <option value="linkedin">LinkedIn Professional Post</option>
                                 <option value="medium">Medium Article</option>
-                                <option value="devio">Dev.io Technical Post</option>
+                                <option value="devio">Dev.to Technical Post</option>
                                 <option value="facebook">Facebook Social Post</option>
                                 <option value="instagram">Instagram Caption</option>
                                 <option value="x-twitter">X (Twitter) Thread</option>
                             </select>
-                           
                         </div>
                     </div>
 
@@ -73,14 +72,14 @@
                     </div>
 
                     <div class="f2e-setting-group pt-2">
-                        <button id="f2e-advanced-settings-button" type="button" class="f2e-button f2e-button-secondary w-full py-2.5 px-4 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 font-bold flex items-center justify-center gap-2 transition-all">
+                        <button id="f2e-advanced-settings-button" type="button" class="f2e-button f2e-button-secondary w-full py-2.5 px-4 rounded-xl border border-slate-200 text-slate-700 hover:bg-blue-600 hover:text-white font-bold flex items-center justify-center gap-2 transition-all">
                             <i class="fas fa-sliders-h text-sm"></i> Advanced Settings
                         </button>
                     </div>
 
                 </div>
 
-                <button id="f2e-generate-button" class="f2e-button f2e-button-primary py-4 px-6 text-lg font-bold w-full mt-8 flex items-center justify-center gap-3 rounded-2xl bg-blue-600 text-white shadow-lg shadow-blue-200 hover:bg-blue-700 hover:-translate-y-0.5 transition-all">
+                <button id="f2e-generate-button" class="f2e-button f2e-button-primary py-4 px-6 text-lg font-bold w-full mt-8 flex items-center justify-center gap-3 rounded-2xl bg-blue-600 text-white shadow-lg shadow-blue-200 hover:bg-blue-700 hover:text-white hover:-translate-y-0.5 transition-all">
                     <span class="f2e-button-content flex items-center gap-2">
                         Generate
                         <span class="f2e-points-badge ml-2 px-2 py-0.5 bg-blue-500 rounded text-[10px] font-black uppercase tracking-tighter">100 Points</span>
@@ -99,14 +98,14 @@
                     <div class="f2e-result-header mb-6">
                         <div class="f2e-result-actions flex justify-between items-center flex-wrap gap-3">
                             <div class="f2e-left-actions flex gap-2">
-                                <button id="f2e-copy-button" class="px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50 flex items-center gap-2 transition-all">
+                                <button id="f2e-copy-button" class="px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 hover:bg-blue-600 hover:text-white flex items-center gap-2 transition-all">
                                     <i class="far fa-copy"></i> Copy
                                 </button>
-                                <button id="f2e-download-button" class="px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50 flex items-center gap-2 transition-all">
+                                <button id="f2e-download-button" class="px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 hover:bg-blue-600 hover:text-white flex items-center gap-2 transition-all">
                                     <i class="fas fa-download"></i> Download
                                 </button>
                             </div>
-                            <button id="f2e-clear-button" class="px-4 py-2 bg-rose-50 text-rose-600 rounded-xl text-sm font-bold hover:bg-rose-100 transition-all">
+                            <button id="f2e-clear-button" class="px-4 py-2 bg-rose-50 text-rose-600 rounded-xl text-sm font-bold hover:bg-rose-600 hover:text-white transition-all">
                                 <i class="fas fa-trash-alt mr-2"></i> Clear
                             </button>
                         </div>
@@ -238,7 +237,7 @@
             </div>
             
             <div class="f2e-modal-footer p-6 border-t border-slate-100 flex justify-end">
-                <button type="button" class="f2e-close-modal f2e-button f2e-button-primary py-3 px-10 text-base font-bold text-white bg-blue-600 rounded-2xl shadow-lg hover:bg-blue-700 transition-all">
+                <button type="button" class="f2e-close-modal f2e-done-modal f2e-button f2e-button-primary py-3 px-10 text-base font-bold text-white bg-blue-600 rounded-2xl shadow-lg hover:bg-blue-700 hover:text-white transition-all">
                     Done
                 </button>
             </div>

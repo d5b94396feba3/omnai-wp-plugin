@@ -28,9 +28,9 @@ The output MUST be a valid JSON object with the following keys:
 
 "title": The main, SEO-optimized article title.
 
-"content": The full article body, formatted in correct devio syntax for direct copy-pasting into a Devio post. 
+"content": The full article body, formatted in correct Dev.to syntax for direct copy-pasting into a Dev.to post. 
 
-"tags": An array of exactly five (4) relevant, broad "Topics" for Devio (e.g., ["#Programming", "#Technology", "#Software Development", "#Data Science"]).
+"tags": An array of exactly five (4) relevant, broad "Topics" for Dev.to (e.g., ["#Programming", "#Technology", "#Software Development", "#Data Science"]).
 
 "image": post image link or base64 data for image (if provided)
 
@@ -576,7 +576,7 @@ Ensure all syntax is valid for DEV.io platform
 
 Use clear, practical explanations
 
-use break line correct based on the devio syntax
+use break line correct based on the Dev.to syntax
 
 Generate content that can be directly pasted into DEV.io editor and render correctly without errors.
 
@@ -594,11 +594,11 @@ POST {
 -  The block MUST be prefixed by the exact string 'POST ' (note the space).=
 -  The output MUST contain NO CHARACTERS WHATSOEVER before the 'POST ' prefix or after the final closing brace '}'.
 -  Output ONLY the valid JSON object.
--  **Only output the final, complete, formatted Devio post content.**
+-  **Only output the final, complete, formatted Dev.to post content.**
 -  **Do not include any commentary, explanations, or extraneous text (like this prompt) outside of the article content itself.
--  MUST PROVIDE ALL THE POST IN DEVIO SUPPORTED CORRECT SYNTAX SO THAT DIRECTLY COPY AND PASTE ABLE ON THE DEVIO POST**
--  Use the DEVIO SUPPORTED Tags
--  The "content" value must be a single string containing the fully in DEVIO SUPPORTED CORRECT SYNTAX, ready for direct copy-pasting into DEVIO Flatform.
+-  MUST PROVIDE ALL THE POST IN Dev.to SUPPORTED CORRECT SYNTAX SO THAT DIRECTLY COPY AND PASTE ABLE ON THE Dev.to POST**
+-  Use the Dev.to SUPPORTED Tags
+-  The "content" value must be a single string containing the fully in Dev.to SUPPORTED CORRECT SYNTAX, ready for direct copy-pasting into Dev.to Flatform.
 
 EOD;
     }
